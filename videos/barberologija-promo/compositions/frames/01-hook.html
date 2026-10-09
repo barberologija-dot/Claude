@@ -1,0 +1,77 @@
+<template>
+  <div id="root" data-composition-id="01-hook" data-start="0" data-duration="4.9" data-width="1080" data-height="1080">
+    <style>
+      @font-face { font-family: "Barlow"; font-weight: 800; src: url("assets/fonts/barlow-latin-800-normal.woff2") format("woff2"); unicode-range: U+0000-00FF; }
+      @font-face { font-family: "Barlow"; font-weight: 800; src: url("assets/fonts/barlow-latin-ext-800-normal.woff2") format("woff2"); unicode-range: U+0100-024F; }
+      @font-face { font-family: "Barlow"; font-weight: 900; src: url("assets/fonts/barlow-latin-900-normal.woff2") format("woff2"); unicode-range: U+0000-00FF; }
+      @font-face { font-family: "Barlow"; font-weight: 900; src: url("assets/fonts/barlow-latin-ext-900-normal.woff2") format("woff2"); unicode-range: U+0100-024F; }
+      @font-face { font-family: "IBM Plex Mono"; font-weight: 500; src: url("assets/fonts/ibm-plex-mono-latin-500-normal.woff2") format("woff2"); unicode-range: U+0000-00FF; }
+      @font-face { font-family: "IBM Plex Mono"; font-weight: 500; src: url("assets/fonts/ibm-plex-mono-latin-ext-500-normal.woff2") format("woff2"); unicode-range: U+0100-024F; }
+      #root { width: 1080px; height: 1080px; position: relative; overflow: hidden; font-family: "Barlow", sans-serif; }
+      .clip { position: absolute; inset: 0; }
+      #h01-bg { background: #0d0d0d; overflow: hidden; }
+      #h01-floorwrap { position: absolute; left: -50%; width: 200%; top: 640px; height: 900px; perspective: 520px; perspective-origin: 50% 0%; }
+      #h01-floor { position: absolute; inset: 0 0 -400px 0; transform-origin: 50% 0%; transform: rotateX(68deg);
+        background-image: linear-gradient(rgba(139,209,36,0.22) 2px, transparent 2px), linear-gradient(90deg, rgba(139,209,36,0.16) 2px, transparent 2px);
+        background-size: 120px 120px; }
+      #h01-floorfade { position: absolute; left: 0; right: 0; top: 600px; height: 480px; background: linear-gradient(#0d0d0d 0%, rgba(13,13,13,0) 45%, rgba(13,13,13,0) 70%, #0d0d0d 100%); }
+      #h01-haze { position: absolute; left: 90px; top: 520px; width: 900px; height: 260px; border-radius: 50%;
+        background: radial-gradient(closest-side, rgba(139,209,36,0.55), rgba(139,209,36,0.12) 60%, rgba(139,209,36,0) 100%); filter: blur(30px); }
+      #h01-vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 45%, rgba(0,0,0,0.85) 100%); }
+      #h01-grain { position: absolute; inset: 0; opacity: 0.09; mix-blend-mode: screen; }
+      .h01-chrome { position: absolute; font-family: "IBM Plex Mono", monospace; font-weight: 500; font-size: 15px; letter-spacing: 0.14em; text-transform: uppercase; color: #8bd124; }
+      #h01-tl { left: 56px; top: 52px; padding-left: 22px; border-left: 2px solid #8bd124; border-top: 2px solid #8bd124; padding-top: 10px; }
+      #h01-tr { right: 56px; top: 52px; color: #8a8d84; text-align: right; }
+      #h01-lines { position: absolute; left: 70px; right: 70px; top: 200px; }
+      .h01-line { display: block; overflow: hidden; line-height: 1.02; padding-bottom: 0.06em; }
+      .h01-w { display: inline-block; }
+      #h01-l1 { font-size: 92px; font-weight: 800; letter-spacing: -0.03em; color: #ffffff; }
+      #h01-l2 { font-size: 138px; font-weight: 900; letter-spacing: -0.04em; color: #ffffff; margin-top: 18px; }
+      #h01-sami { color: #8bd124; text-shadow: 0 0 18px rgba(139,209,36,0.85), 0 0 50px rgba(139,209,36,0.45); }
+      #h01-rule { position: absolute; left: 70px; top: 640px; width: 36px; height: 3px; background: #8bd124; }
+    </style>
+
+    <div id="h01-bg" class="clip" data-start="0" data-duration="4.9" data-track-index="0">
+      <div id="h01-floorwrap" data-layout-allow-overflow><div id="h01-floor"></div></div>
+      <div id="h01-floorfade"></div>
+      <div id="h01-haze"></div>
+      <svg id="h01-grain" width="1080" height="1080"><filter id="h01-n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7"/></filter><rect width="1080" height="1080" filter="url(#h01-n)"/></svg>
+      <div id="h01-vignette"></div>
+    </div>
+
+    <div id="h01-fg" class="clip" data-start="0" data-duration="4.9" data-track-index="1">
+      <div id="h01-tl" class="h01-chrome">Barberologija · 1080 · 30 fps</div>
+      <div id="h01-tr" class="h01-chrome">Kader 01 / 04</div>
+      <div id="h01-lines">
+        <span class="h01-line" data-layout-allow-overflow id="h01-l1"><span class="h01-w">prodajamo</span> <span class="h01-w">samo</span> <span class="h01-w">tisto,</span></span>
+        <div id="h01-l2"><span class="h01-line" data-layout-allow-overflow><span class="h01-w">kar</span> <span class="h01-w" id="h01-sami">sami</span></span><span class="h01-line" data-layout-allow-overflow><span class="h01-w">uporabljamo.</span></span></div>
+      </div>
+      <div id="h01-rule"></div>
+    </div>
+
+    <script src="assets/vendor/gsap.min.js"></script>
+    <script>
+      (function () {
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+        // Scene 1: field + floor + haze + chrome
+        tl.fromTo("#h01-floor", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power2.out" }, 0);
+        tl.to("#h01-floor", { backgroundPosition: "0px 360px", duration: 4.5, ease: "none" }, 0);
+        tl.fromTo("#h01-haze", { opacity: 0, scaleX: 0.6 }, { opacity: 1, scaleX: 1, duration: 1.0, ease: "power3.out" }, 0.05);
+        tl.fromTo(".h01-chrome", { opacity: 0 }, { opacity: 1, duration: 0.25, stagger: 0.12, ease: "none" }, 0.15);
+        // Scene 2: line 1 rises word by word from mask
+        tl.fromTo("#h01-l1 .h01-w", { yPercent: 130 }, { yPercent: 0, duration: 0.55, stagger: 0.18, ease: "power3.out" }, 0.4);
+        // Scene 3: line 1 dims + lifts; line 2 slams in
+        tl.to("#h01-l1", { color: "#4D5048", y: -12, duration: 0.5, ease: "power3.out" }, 2.0);
+        tl.fromTo("#h01-l2 .h01-w", { yPercent: 135, scale: 1.08 }, { yPercent: 0, scale: 1, duration: 0.42, stagger: 0.12, ease: "expo.out", transformOrigin: "0% 100%" }, 2.0);
+        tl.fromTo("#h01-sami", { textShadow: "0 0 0px rgba(139,209,36,0), 0 0 0px rgba(139,209,36,0)" }, { textShadow: "0 0 26px rgba(139,209,36,1), 0 0 80px rgba(139,209,36,0.6)", duration: 0.35, ease: "power2.out" }, 2.2);
+        tl.to("#h01-sami", { textShadow: "0 0 18px rgba(139,209,36,0.85), 0 0 50px rgba(139,209,36,0.45)", duration: 0.6, ease: "power2.inOut" }, 2.6);
+        tl.to("#h01-sami", { keyframes: [{ opacity: 0.35, duration: 0.04 }, { opacity: 1, duration: 0.04 }, { opacity: 0.5, duration: 0.03 }, { opacity: 1, duration: 0.05 }] }, 2.3);
+        tl.to("#h01-haze", { scale: 1.12, duration: 0.6, ease: "power2.out" }, 2.2);
+        tl.fromTo("#h01-rule", { scaleX: 0, transformOrigin: "0% 50%" }, { scaleX: 1, duration: 0.5, ease: "power3.out" }, 2.6);
+        // Scene 4: held read (floor drift continues)
+        window.__timelines["01-hook"] = tl;
+      })();
+    </script>
+  </div>
+</template>

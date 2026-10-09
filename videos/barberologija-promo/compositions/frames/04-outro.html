@@ -1,0 +1,73 @@
+<template>
+  <div id="root" data-composition-id="04-outro" data-start="0" data-duration="6" data-width="1080" data-height="1080">
+    <style>
+      @font-face { font-family: "Barlow"; font-weight: 800; src: url("assets/fonts/barlow-latin-800-normal.woff2") format("woff2"); unicode-range: U+0000-00FF; }
+      @font-face { font-family: "Barlow"; font-weight: 800; src: url("assets/fonts/barlow-latin-ext-800-normal.woff2") format("woff2"); unicode-range: U+0100-024F; }
+      @font-face { font-family: "Barlow"; font-weight: 900; src: url("assets/fonts/barlow-latin-900-normal.woff2") format("woff2"); unicode-range: U+0000-00FF; }
+      @font-face { font-family: "Barlow"; font-weight: 900; src: url("assets/fonts/barlow-latin-ext-900-normal.woff2") format("woff2"); unicode-range: U+0100-024F; }
+      @font-face { font-family: "IBM Plex Mono"; font-weight: 500; src: url("assets/fonts/ibm-plex-mono-latin-500-normal.woff2") format("woff2"); unicode-range: U+0000-00FF; }
+      @font-face { font-family: "IBM Plex Mono"; font-weight: 500; src: url("assets/fonts/ibm-plex-mono-latin-ext-500-normal.woff2") format("woff2"); unicode-range: U+0100-024F; }
+      #root { width: 1080px; height: 1080px; position: relative; overflow: hidden; font-family: "Barlow", sans-serif; }
+      .clip { position: absolute; inset: 0; }
+      #p04-bg { background: #0d0d0d; overflow: hidden; }
+      #p04-floorwrap { position: absolute; left: -50%; width: 200%; top: 640px; height: 900px; perspective: 520px; perspective-origin: 50% 0%; }
+      #p04-floor { position: absolute; inset: 0 0 -400px 0; transform-origin: 50% 0%; transform: rotateX(68deg);
+        background-image: linear-gradient(rgba(139,209,36,0.22) 2px, transparent 2px), linear-gradient(90deg, rgba(139,209,36,0.16) 2px, transparent 2px);
+        background-size: 120px 120px; }
+      #p04-floorfade { position: absolute; left: 0; right: 0; top: 600px; height: 480px; background: linear-gradient(#0d0d0d 0%, rgba(13,13,13,0) 45%, rgba(13,13,13,0) 70%, #0d0d0d 100%); }
+      #p04-haze { position: absolute; left: 90px; top: 520px; width: 900px; height: 260px; border-radius: 50%;
+        background: radial-gradient(closest-side, rgba(139,209,36,0.55), rgba(139,209,36,0.12) 60%, rgba(139,209,36,0) 100%); filter: blur(30px); }
+      #p04-vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 45%, rgba(0,0,0,0.85) 100%); }
+      #p04-grain { position: absolute; inset: 0; opacity: 0.09; mix-blend-mode: screen; }
+      .p04-chrome { position: absolute; font-family: "IBM Plex Mono", monospace; font-weight: 500; font-size: 15px; letter-spacing: 0.14em; text-transform: uppercase; color: #8bd124; }
+      #p04-tl { left: 56px; top: 52px; padding-left: 22px; border-left: 2px solid #8bd124; border-top: 2px solid #8bd124; padding-top: 10px; }
+      #p04-tr { right: 56px; top: 52px; color: #8a8d84; text-align: right; }
+      #p04-haze { left: 140px; top: 220px; width: 800px; height: 480px; }
+      #p04-logo { position: absolute; left: 119px; top: 150px; width: 842px; height: 452px; }
+      #p04-logo img { position: absolute; inset: 0; width: 100%; height: 100%; }
+      #p04-outline { filter: drop-shadow(0 0 10px rgba(139,209,36,0.9)) drop-shadow(0 0 30px rgba(139,209,36,0.5)); }
+      #p04-letters { filter: drop-shadow(0 0 6px rgba(255,255,255,0.25)); }
+      #p04-sub { position: absolute; left: 0; right: 0; top: 670px; text-align: center; font-family: "IBM Plex Mono", monospace; font-weight: 500; font-size: 22px; letter-spacing: 0.22em; color: #ffffff; }
+      #p04-url { position: absolute; left: 0; right: 0; top: 728px; text-align: center; font-size: 76px; font-weight: 900; letter-spacing: -0.03em; color: #8bd124; text-shadow: 0 0 18px rgba(139,209,36,0.75), 0 0 50px rgba(139,209,36,0.35); }
+    </style>
+
+    <div id="p04-bg" class="clip" data-start="0" data-duration="6" data-track-index="0">
+      <div id="p04-haze"></div>
+      <svg id="p04-grain" width="1080" height="1080"><filter id="p04-n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="23"/></filter><rect width="1080" height="1080" filter="url(#p04-n)"/></svg>
+      <div id="p04-vignette"></div>
+    </div>
+    <div id="p04-fg" class="clip" data-start="0" data-duration="6" data-track-index="1">
+      <div id="p04-logo">
+        <img id="p04-outline" src="assets/logo-outline.svg" alt="">
+        <img id="p04-letters" src="assets/logo-letters.svg" alt="BARBEROLOGIJA">
+      </div>
+      <div id="p04-sub">PROFESIONALNA BRIVSKA OPREMA</div>
+      <div id="p04-url">barberologija.si</div>
+    </div>
+
+    <script src="assets/vendor/gsap.min.js"></script>
+    <script>
+      (function () {
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+        tl.fromTo("#p04-haze", { opacity: 0, scale: 0.7 }, { opacity: 0.55, scale: 1, duration: 1.6, ease: "power2.out" }, 0.2);
+        // Scene 1: neon tube flicker-on of the outline
+        tl.fromTo("#p04-outline", { opacity: 0 }, { keyframes: [
+          { opacity: 0.9, duration: 0.05 }, { opacity: 0.05, duration: 0.12 }, { opacity: 0.8, duration: 0.05 },
+          { opacity: 0.1, duration: 0.25 }, { opacity: 1, duration: 0.06 }, { opacity: 0.6, duration: 0.05 }, { opacity: 1, duration: 0.3 }
+        ] }, 0.3);
+        tl.fromTo("#p04-logo", { scale: 0.94 }, { scale: 1, duration: 2.8, ease: "power2.out" }, 0.3);
+        // Scene 2: letters brush-wipe left to right
+        tl.fromTo("#p04-letters", { clipPath: "inset(0 100% 0 0)", scale: 1.04 }, { clipPath: "inset(0 0% 0 0)", scale: 1, duration: 0.9, ease: "power3.inOut" }, 1.6);
+        // Scene 3: lockup
+        tl.fromTo("#p04-sub", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 2.8);
+        tl.fromTo("#p04-url", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 3.1);
+        // Scene 4: neon hum (deterministic micro jitter)
+        tl.to("#p04-outline", { keyframes: [
+          { opacity: 0.88, duration: 0.06 }, { opacity: 1, duration: 0.5 }, { opacity: 0.93, duration: 0.05 }, { opacity: 1, duration: 0.7 }
+        ] }, 4.0);
+        window.__timelines["04-outro"] = tl;
+      })();
+    </script>
+  </div>
+</template>
