@@ -1,0 +1,60 @@
+<template>
+  <div id="root" data-composition-id="fx-post" data-start="0" data-duration="52" data-width="1920" data-height="1080">
+    <style>
+      @font-face { font-family: "Inter"; font-weight: 800; src: url("assets/fonts/inter-latin-800-normal.woff2") format("woff2"); }
+      #root { width: 1920px; height: 1080px; position: relative; overflow: hidden; pointer-events: none; }
+      .clip { position: absolute; inset: 0; }
+      .fx { position: absolute; inset: 0; }
+      #fx-vignette { background: radial-gradient(ellipse 90% 85% at 50% 48%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.72) 100%); }
+      #fx-grain { opacity: 0.11; mix-blend-mode: screen; }
+      #fx-flash { background: radial-gradient(ellipse at 50% 50%, #ffffff 0%, #f4ffe6 45%, #d9f5b0 100%); opacity: 0; }
+      #fx-sweep { position: absolute; top: -200px; height: 1480px; width: 520px; left: 0; opacity: 0; transform: rotate(18deg);
+        background: linear-gradient(90deg, rgba(255,255,255,0), rgba(210,255,150,0.55) 50%, rgba(255,255,255,0)); mix-blend-mode: screen; filter: blur(30px); }
+      .flare { position: absolute; width: 1400px; height: 12px; opacity: 0; mix-blend-mode: screen; transform-origin: 50% 50%;
+        background: linear-gradient(90deg, rgba(139,209,36,0), rgba(170,240,90,0.9) 45%, #ffffff 50%, rgba(170,240,90,0.9) 55%, rgba(139,209,36,0)); filter: blur(2px); }
+      .flare-core { position: absolute; left: 640px; top: -54px; width: 120px; height: 120px; border-radius: 50%;
+        background: radial-gradient(closest-side, rgba(255,255,255,0.95), rgba(170,240,90,0.5) 40%, rgba(139,209,36,0)); }
+    </style>
+    <div id="fx-post-layer" class="clip" data-start="0" data-duration="52" data-track-index="0" data-layout-allow-overflow>
+      <div class="flare" data-layout-ignore id="fl0" style="left:600px;top:594px"><div class="flare-core"></div></div>
+      <div class="flare" data-layout-ignore id="fl1" style="left:260px;top:354px"><div class="flare-core"></div></div>
+      <div class="flare" data-layout-ignore id="fl2" style="left:720px;top:694px"><div class="flare-core"></div></div>
+      <div class="flare" data-layout-ignore id="fl3" style="left:-440px;top:754px"><div class="flare-core"></div></div>
+      <div class="flare" data-layout-ignore id="fl4" style="left:260px;top:324px"><div class="flare-core"></div></div>
+      <div id="fx-vignette" class="fx" data-layout-ignore data-layout-allow-occlusion></div>
+      <svg id="fx-grain" class="fx" data-layout-ignore width="1920" height="1080" viewBox="0 0 960 540" preserveAspectRatio="none">
+        <filter id="grainf"><feTurbulence id="grain-turb" type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="1" /></filter>
+        <rect width="960" height="540" filter="url(#grainf)" />
+      </svg>
+      <div id="fx-sweep" data-layout-ignore></div>
+      <div id="fx-flash" class="fx" data-layout-ignore data-layout-allow-occlusion></div>
+    </div>
+    <script src="assets/vendor/gsap.min.js"></script>
+    <script>
+      (function () {
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+        // film grain: re-seed the noise every 2 frames (deterministic)
+        tl.fromTo("#grain-turb", { attr: { seed: 1 } }, { attr: { seed: 780 }, duration: 52, ease: "steps(780)" }, 0);
+        // cut transitions: flash-through-white / light sweep
+        tl.fromTo("#fx-flash", { opacity: 0 }, { keyframes: [ { opacity: 1, duration: 0.12, ease: "power2.in" }, { opacity: 0, duration: 0.45, ease: "power2.out" } ] }, 5.88);
+        tl.fromTo("#fx-flash", { opacity: 0 }, { immediateRender: false, keyframes: [ { opacity: 0.45, duration: 0.12, ease: "power2.in" }, { opacity: 0, duration: 0.45, ease: "power2.out" } ] }, 11.48);
+        tl.fromTo("#fx-sweep", { x: -900, opacity: 1 }, { x: 2300, opacity: 1, duration: 0.7, ease: "power2.inOut" }, 11.25);
+        tl.fromTo("#fx-flash", { opacity: 0 }, { immediateRender: false, keyframes: [ { opacity: 1, duration: 0.12, ease: "power2.in" }, { opacity: 0, duration: 0.45, ease: "power2.out" } ] }, 18.48);
+        tl.fromTo("#fx-flash", { opacity: 0 }, { immediateRender: false, keyframes: [ { opacity: 0.45, duration: 0.12, ease: "power2.in" }, { opacity: 0, duration: 0.45, ease: "power2.out" } ] }, 24.68);
+        tl.fromTo("#fx-sweep", { x: -900, opacity: 1 }, { immediateRender: false, x: 2300, opacity: 1, duration: 0.7, ease: "power2.inOut" }, 24.45);
+        tl.fromTo("#fx-flash", { opacity: 0 }, { immediateRender: false, keyframes: [ { opacity: 1, duration: 0.12, ease: "power2.in" }, { opacity: 0, duration: 0.45, ease: "power2.out" } ] }, 37.48);
+        tl.fromTo("#fx-flash", { opacity: 0 }, { immediateRender: false, keyframes: [ { opacity: 0.45, duration: 0.12, ease: "power2.in" }, { opacity: 0, duration: 0.45, ease: "power2.out" } ] }, 46.48);
+        tl.fromTo("#fx-sweep", { x: -900, opacity: 1 }, { immediateRender: false, x: 2300, opacity: 1, duration: 0.7, ease: "power2.inOut" }, 46.25);
+        // anamorphic lens flares on impacts
+        tl.fromTo("#fl0", { opacity: 0, scaleX: 0.3 }, { keyframes: [ { opacity: 1, scaleX: 1, duration: 0.12, ease: "power2.out" }, { opacity: 0, scaleX: 1.3, duration: 0.9, ease: "power2.in" } ] }, 3.14);
+        tl.fromTo("#fl1", { opacity: 0, scaleX: 0.3 }, { keyframes: [ { opacity: 1, scaleX: 1, duration: 0.12, ease: "power2.out" }, { opacity: 0, scaleX: 1.3, duration: 0.9, ease: "power2.in" } ] }, 7.08);
+        tl.fromTo("#fl2", { opacity: 0, scaleX: 0.3 }, { keyframes: [ { opacity: 1, scaleX: 1, duration: 0.12, ease: "power2.out" }, { opacity: 0, scaleX: 1.3, duration: 0.9, ease: "power2.in" } ] }, 35.30);
+        tl.fromTo("#fl3", { opacity: 0, scaleX: 0.3 }, { keyframes: [ { opacity: 1, scaleX: 1, duration: 0.12, ease: "power2.out" }, { opacity: 0, scaleX: 1.3, duration: 0.9, ease: "power2.in" } ] }, 45.50);
+        tl.fromTo("#fl4", { opacity: 0, scaleX: 0.3 }, { keyframes: [ { opacity: 1, scaleX: 1, duration: 0.12, ease: "power2.out" }, { opacity: 0, scaleX: 1.3, duration: 0.9, ease: "power2.in" } ] }, 47.40);
+        tl.to({}, { duration: 52 }, 0);
+        window.__timelines["fx-post"] = tl;
+      })();
+    </script>
+  </div>
+</template>

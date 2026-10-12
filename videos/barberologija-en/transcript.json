@@ -1,0 +1,800 @@
+[
+ {
+  "id": 0,
+  "text": "We",
+  "start": 0.8,
+  "end": 0.95,
+  "line": 1
+ },
+ {
+  "id": 1,
+  "text": "don't",
+  "start": 0.95,
+  "end": 1.11,
+  "line": 1
+ },
+ {
+  "id": 2,
+  "text": "sell",
+  "start": 1.11,
+  "end": 1.41,
+  "line": 1
+ },
+ {
+  "id": 3,
+  "text": "everything.",
+  "start": 1.41,
+  "end": 2.04,
+  "line": 1
+ },
+ {
+  "id": 4,
+  "text": "We",
+  "start": 2.04,
+  "end": 2.22,
+  "line": 1
+ },
+ {
+  "id": 5,
+  "text": "only",
+  "start": 2.22,
+  "end": 2.44,
+  "line": 1
+ },
+ {
+  "id": 6,
+  "text": "sell",
+  "start": 2.44,
+  "end": 2.8,
+  "line": 1
+ },
+ {
+  "id": 7,
+  "text": "what",
+  "start": 2.8,
+  "end": 2.95,
+  "line": 1
+ },
+ {
+  "id": 8,
+  "text": "we've",
+  "start": 2.95,
+  "end": 3.14,
+  "line": 1
+ },
+ {
+  "id": 9,
+  "text": "tested",
+  "start": 3.14,
+  "end": 3.58,
+  "line": 1
+ },
+ {
+  "id": 10,
+  "text": "ourselves.",
+  "start": 3.58,
+  "end": 4.38,
+  "line": 1
+ },
+ {
+  "id": 11,
+  "text": "We're",
+  "start": 6.93,
+  "end": 7.08,
+  "line": 2
+ },
+ {
+  "id": 12,
+  "text": "Barberologija.",
+  "start": 7.08,
+  "end": 8.41,
+  "line": 2
+ },
+ {
+  "id": 13,
+  "text": "A",
+  "start": 8.41,
+  "end": 8.45,
+  "line": 2
+ },
+ {
+  "id": 14,
+  "text": "small",
+  "start": 8.45,
+  "end": 8.83,
+  "line": 2
+ },
+ {
+  "id": 15,
+  "text": "shop,",
+  "start": 8.83,
+  "end": 9.36,
+  "line": 2
+ },
+ {
+  "id": 16,
+  "text": "run",
+  "start": 9.36,
+  "end": 9.61,
+  "line": 2
+ },
+ {
+  "id": 17,
+  "text": "by",
+  "start": 9.61,
+  "end": 9.78,
+  "line": 2
+ },
+ {
+  "id": 18,
+  "text": "barbers.",
+  "start": 9.78,
+  "end": 10.55,
+  "line": 2
+ },
+ {
+  "id": 19,
+  "text": "Every",
+  "start": 12.0,
+  "end": 12.29,
+  "line": 3
+ },
+ {
+  "id": 20,
+  "text": "clipper",
+  "start": 12.29,
+  "end": 12.63,
+  "line": 3
+ },
+ {
+  "id": 21,
+  "text": "goes",
+  "start": 12.63,
+  "end": 12.96,
+  "line": 3
+ },
+ {
+  "id": 22,
+  "text": "behind",
+  "start": 12.96,
+  "end": 13.34,
+  "line": 3
+ },
+ {
+  "id": 23,
+  "text": "our",
+  "start": 13.34,
+  "end": 13.51,
+  "line": 3
+ },
+ {
+  "id": 24,
+  "text": "own",
+  "start": 13.51,
+  "end": 13.71,
+  "line": 3
+ },
+ {
+  "id": 25,
+  "text": "chair",
+  "start": 13.71,
+  "end": 13.97,
+  "line": 3
+ },
+ {
+  "id": 26,
+  "text": "first.",
+  "start": 13.97,
+  "end": 14.7,
+  "line": 3
+ },
+ {
+  "id": 27,
+  "text": "If",
+  "start": 14.7,
+  "end": 14.84,
+  "line": 3
+ },
+ {
+  "id": 28,
+  "text": "it's",
+  "start": 14.84,
+  "end": 15.01,
+  "line": 3
+ },
+ {
+  "id": 29,
+  "text": "not",
+  "start": 15.01,
+  "end": 15.22,
+  "line": 3
+ },
+ {
+  "id": 30,
+  "text": "worth",
+  "start": 15.22,
+  "end": 15.5,
+  "line": 3
+ },
+ {
+  "id": 31,
+  "text": "buying,",
+  "start": 15.5,
+  "end": 16.06,
+  "line": 3
+ },
+ {
+  "id": 32,
+  "text": "you",
+  "start": 16.06,
+  "end": 16.19,
+  "line": 3
+ },
+ {
+  "id": 33,
+  "text": "won't",
+  "start": 16.19,
+  "end": 16.42,
+  "line": 3
+ },
+ {
+  "id": 34,
+  "text": "find",
+  "start": 16.42,
+  "end": 16.77,
+  "line": 3
+ },
+ {
+  "id": 35,
+  "text": "it",
+  "start": 16.77,
+  "end": 16.88,
+  "line": 3
+ },
+ {
+  "id": 36,
+  "text": "here.",
+  "start": 16.88,
+  "end": 17.19,
+  "line": 3
+ },
+ {
+  "id": 37,
+  "text": "That's",
+  "start": 19.0,
+  "end": 19.27,
+  "line": 4
+ },
+ {
+  "id": 38,
+  "text": "why",
+  "start": 19.27,
+  "end": 19.48,
+  "line": 4
+ },
+ {
+  "id": 39,
+  "text": "we",
+  "start": 19.48,
+  "end": 19.64,
+  "line": 4
+ },
+ {
+  "id": 40,
+  "text": "only",
+  "start": 19.64,
+  "end": 19.85,
+  "line": 4
+ },
+ {
+  "id": 41,
+  "text": "carry",
+  "start": 19.85,
+  "end": 20.18,
+  "line": 4
+ },
+ {
+  "id": 42,
+  "text": "a",
+  "start": 20.18,
+  "end": 20.21,
+  "line": 4
+ },
+ {
+  "id": 43,
+  "text": "few",
+  "start": 20.21,
+  "end": 20.44,
+  "line": 4
+ },
+ {
+  "id": 44,
+  "text": "brands",
+  "start": 20.44,
+  "end": 20.85,
+  "line": 4
+ },
+ {
+  "id": 45,
+  "text": "for",
+  "start": 20.85,
+  "end": 20.96,
+  "line": 4
+ },
+ {
+  "id": 46,
+  "text": "now.",
+  "start": 20.96,
+  "end": 21.44,
+  "line": 4
+ },
+ {
+  "id": 47,
+  "text": "But",
+  "start": 21.59,
+  "end": 21.75,
+  "line": 4
+ },
+ {
+  "id": 48,
+  "text": "every",
+  "start": 21.75,
+  "end": 21.99,
+  "line": 4
+ },
+ {
+  "id": 49,
+  "text": "one",
+  "start": 21.99,
+  "end": 22.18,
+  "line": 4
+ },
+ {
+  "id": 50,
+  "text": "of",
+  "start": 22.18,
+  "end": 22.27,
+  "line": 4
+ },
+ {
+  "id": 51,
+  "text": "them",
+  "start": 22.27,
+  "end": 22.46,
+  "line": 4
+ },
+ {
+  "id": 52,
+  "text": "earned",
+  "start": 22.46,
+  "end": 22.7,
+  "line": 4
+ },
+ {
+  "id": 53,
+  "text": "its",
+  "start": 22.7,
+  "end": 22.86,
+  "line": 4
+ },
+ {
+  "id": 54,
+  "text": "place.",
+  "start": 22.86,
+  "end": 23.46,
+  "line": 4
+ },
+ {
+  "id": 55,
+  "text": "Running",
+  "start": 25.2,
+  "end": 25.58,
+  "line": 5
+ },
+ {
+  "id": 56,
+  "text": "a",
+  "start": 25.58,
+  "end": 25.62,
+  "line": 5
+ },
+ {
+  "id": 57,
+  "text": "salon,",
+  "start": 25.62,
+  "end": 26.28,
+  "line": 5
+ },
+ {
+  "id": 58,
+  "text": "a",
+  "start": 26.28,
+  "end": 26.33,
+  "line": 5
+ },
+ {
+  "id": 59,
+  "text": "barbershop,",
+  "start": 26.33,
+  "end": 27.09,
+  "line": 5
+ },
+ {
+  "id": 60,
+  "text": "or",
+  "start": 27.09,
+  "end": 27.2,
+  "line": 5
+ },
+ {
+  "id": 61,
+  "text": "still",
+  "start": 27.2,
+  "end": 27.47,
+  "line": 5
+ },
+ {
+  "id": 62,
+  "text": "in",
+  "start": 27.47,
+  "end": 27.56,
+  "line": 5
+ },
+ {
+  "id": 63,
+  "text": "school?",
+  "start": 27.56,
+  "end": 28.13,
+  "line": 5
+ },
+ {
+  "id": 64,
+  "text": "Our",
+  "start": 28.52,
+  "end": 28.62,
+  "line": 5
+ },
+ {
+  "id": 65,
+  "text": "Pro",
+  "start": 28.62,
+  "end": 28.9,
+  "line": 5
+ },
+ {
+  "id": 66,
+  "text": "Pricing",
+  "start": 28.9,
+  "end": 29.39,
+  "line": 5
+ },
+ {
+  "id": 67,
+  "text": "program",
+  "start": 29.39,
+  "end": 29.86,
+  "line": 5
+ },
+ {
+  "id": 68,
+  "text": "gets",
+  "start": 29.86,
+  "end": 30.11,
+  "line": 5
+ },
+ {
+  "id": 69,
+  "text": "you",
+  "start": 30.11,
+  "end": 30.23,
+  "line": 5
+ },
+ {
+  "id": 70,
+  "text": "up",
+  "start": 30.23,
+  "end": 30.35,
+  "line": 5
+ },
+ {
+  "id": 71,
+  "text": "to",
+  "start": 30.35,
+  "end": 30.45,
+  "line": 5
+ },
+ {
+  "id": 72,
+  "text": "30%",
+  "start": 30.45,
+  "end": 31.15,
+  "line": 5
+ },
+ {
+  "id": 73,
+  "text": "off",
+  "start": 31.15,
+  "end": 31.31,
+  "line": 5
+ },
+ {
+  "id": 74,
+  "text": "clippers,",
+  "start": 31.31,
+  "end": 32.05,
+  "line": 5
+ },
+ {
+  "id": 75,
+  "text": "up",
+  "start": 32.05,
+  "end": 32.22,
+  "line": 5
+ },
+ {
+  "id": 76,
+  "text": "to",
+  "start": 32.22,
+  "end": 32.33,
+  "line": 5
+ },
+ {
+  "id": 77,
+  "text": "25%",
+  "start": 32.33,
+  "end": 33.25,
+  "line": 5
+ },
+ {
+  "id": 78,
+  "text": "off",
+  "start": 33.25,
+  "end": 33.41,
+  "line": 5
+ },
+ {
+  "id": 79,
+  "text": "scissors,",
+  "start": 33.41,
+  "end": 34.13,
+  "line": 5
+ },
+ {
+  "id": 80,
+  "text": "and",
+  "start": 34.13,
+  "end": 34.26,
+  "line": 5
+ },
+ {
+  "id": 81,
+  "text": "up",
+  "start": 34.26,
+  "end": 34.4,
+  "line": 5
+ },
+ {
+  "id": 82,
+  "text": "to",
+  "start": 34.4,
+  "end": 34.5,
+  "line": 5
+ },
+ {
+  "id": 83,
+  "text": "50%",
+  "start": 34.5,
+  "end": 35.26,
+  "line": 5
+ },
+ {
+  "id": 84,
+  "text": "off",
+  "start": 35.26,
+  "end": 35.44,
+  "line": 5
+ },
+ {
+  "id": 85,
+  "text": "accessories.",
+  "start": 35.44,
+  "end": 36.23,
+  "line": 5
+ },
+ {
+  "id": 86,
+  "text": "And",
+  "start": 38.6,
+  "end": 38.76,
+  "line": 6
+ },
+ {
+  "id": 87,
+  "text": "something",
+  "start": 38.76,
+  "end": 39.1,
+  "line": 6
+ },
+ {
+  "id": 88,
+  "text": "new",
+  "start": 39.1,
+  "end": 39.26,
+  "line": 6
+ },
+ {
+  "id": 89,
+  "text": "is",
+  "start": 39.26,
+  "end": 39.37,
+  "line": 6
+ },
+ {
+  "id": 90,
+  "text": "coming:",
+  "start": 39.37,
+  "end": 39.83,
+  "line": 6
+ },
+ {
+  "id": 91,
+  "text": "Clipper",
+  "start": 39.83,
+  "end": 40.18,
+  "line": 6
+ },
+ {
+  "id": 92,
+  "text": "Compare.",
+  "start": 40.18,
+  "end": 40.82,
+  "line": 6
+ },
+ {
+  "id": 93,
+  "text": "Put",
+  "start": 41.12,
+  "end": 41.27,
+  "line": 6
+ },
+ {
+  "id": 94,
+  "text": "two",
+  "start": 41.27,
+  "end": 41.41,
+  "line": 6
+ },
+ {
+  "id": 95,
+  "text": "clippers",
+  "start": 41.41,
+  "end": 41.77,
+  "line": 6
+ },
+ {
+  "id": 96,
+  "text": "side",
+  "start": 41.77,
+  "end": 42.06,
+  "line": 6
+ },
+ {
+  "id": 97,
+  "text": "by",
+  "start": 42.06,
+  "end": 42.23,
+  "line": 6
+ },
+ {
+  "id": 98,
+  "text": "side,",
+  "start": 42.23,
+  "end": 42.67,
+  "line": 6
+ },
+ {
+  "id": 99,
+  "text": "check",
+  "start": 42.67,
+  "end": 42.94,
+  "line": 6
+ },
+ {
+  "id": 100,
+  "text": "the",
+  "start": 42.94,
+  "end": 43.05,
+  "line": 6
+ },
+ {
+  "id": 101,
+  "text": "scores,",
+  "start": 43.05,
+  "end": 43.62,
+  "line": 6
+ },
+ {
+  "id": 102,
+  "text": "the",
+  "start": 43.62,
+  "end": 43.71,
+  "line": 6
+ },
+ {
+  "id": 103,
+  "text": "specs,",
+  "start": 43.71,
+  "end": 44.24,
+  "line": 6
+ },
+ {
+  "id": 104,
+  "text": "and",
+  "start": 44.24,
+  "end": 44.36,
+  "line": 6
+ },
+ {
+  "id": 105,
+  "text": "see",
+  "start": 44.36,
+  "end": 44.58,
+  "line": 6
+ },
+ {
+  "id": 106,
+  "text": "who",
+  "start": 44.58,
+  "end": 44.7,
+  "line": 6
+ },
+ {
+  "id": 107,
+  "text": "wins",
+  "start": 44.7,
+  "end": 45.02,
+  "line": 6
+ },
+ {
+  "id": 108,
+  "text": "where.",
+  "start": 45.02,
+  "end": 45.45,
+  "line": 6
+ },
+ {
+  "id": 109,
+  "text": "Barberologija.",
+  "start": 47.4,
+  "end": 48.28,
+  "line": 7
+ },
+ {
+  "id": 110,
+  "text": "Tested",
+  "start": 48.28,
+  "end": 49.06,
+  "line": 7
+ },
+ {
+  "id": 111,
+  "text": "behind",
+  "start": 49.06,
+  "end": 49.53,
+  "line": 7
+ },
+ {
+  "id": 112,
+  "text": "the",
+  "start": 49.53,
+  "end": 49.6,
+  "line": 7
+ },
+ {
+  "id": 113,
+  "text": "chair.",
+  "start": 49.6,
+  "end": 50.13,
+  "line": 7
+ }
+]

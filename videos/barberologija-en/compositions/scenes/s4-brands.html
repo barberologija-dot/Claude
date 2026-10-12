@@ -1,0 +1,82 @@
+<template>
+  <div id="root" data-composition-id="s4-brands" data-start="0" data-duration="6.2" data-width="1920" data-height="1080">
+    <style>
+      @font-face { font-family: "Anton"; font-weight: 400; src: url("assets/fonts/anton-latin-400-normal.woff2") format("woff2"); }
+      @font-face { font-family: "Inter"; font-weight: 500; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+      @font-face { font-family: "Inter"; font-weight: 700; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+      @font-face { font-family: "Inter"; font-weight: 800; src: url("assets/fonts/inter-latin-800-normal.woff2") format("woff2"); }
+      @font-face { font-family: "IBM Plex Mono"; font-weight: 500; src: url("assets/fonts/ibm-plex-mono-latin-500-normal.woff2") format("woff2"); }
+
+      #root { width: 1920px; height: 1080px; position: relative; overflow: hidden; font-family: "Inter", sans-serif; color: #f2f2ee; }
+      .clip { position: absolute; inset: 0; }
+      #s4-bg { background: radial-gradient(ellipse 70% 60% at 50% 45%, #10130c 0%, #070707 70%); }
+      #s4-cam { position: absolute; inset: 0; transform-origin: 50% 45%; }
+      #s4-shk { position: absolute; inset: 0; }
+      .s4-disp { font-family: "Anton", sans-serif; font-weight: 400; text-transform: uppercase; letter-spacing: 0.01em; line-height: 0.95;
+        text-shadow: 0 10px 40px rgba(0,0,0,0.75), 0 2px 6px rgba(0,0,0,0.6); }
+      .s4-mono { font-family: "IBM Plex Mono", monospace; font-weight: 500; text-transform: uppercase; letter-spacing: 0.22em; }
+      .s4-g { color: #8bd124; text-shadow: 0 0 24px rgba(139,209,36,0.55), 0 0 70px rgba(139,209,36,0.25), 0 10px 40px rgba(0,0,0,0.7); }
+      .s4-mask { display: inline-block; overflow: hidden; vertical-align: bottom; padding: 0.06em 0.04em 0.02em; margin: 0 -0.04em; }
+      .s4-w { display: inline-block; }
+      .s4-shadow { filter: drop-shadow(0 30px 40px rgba(0,0,0,0.7)) drop-shadow(0 0 30px rgba(139,209,36,0.12)); }
+
+      #s4-rovra { position: absolute; left: 610px; top: 300px; width: 700px; height: 125px; }
+      #s4-rcut { position: absolute; left: 800px; top: 297px; width: 320px; height: 131px; }
+      .s4-logo { filter: drop-shadow(0 12px 30px rgba(0,0,0,0.8)) drop-shadow(0 0 22px rgba(255,255,255,0.12)); }
+      #s4-sweep { position: absolute; top: 200px; height: 340px; width: 180px; left: -200px;
+        background: linear-gradient(90deg, rgba(255,255,255,0), rgba(230,255,190,0.55), rgba(255,255,255,0)); transform: skewX(-18deg); mix-blend-mode: screen; filter: blur(8px); }
+      #s4-t1 { position: absolute; left: 0; right: 0; top: 560px; text-align: center; font-size: 104px; white-space: nowrap; }
+      #s4-t2 { position: absolute; left: 0; right: 0; top: 690px; text-align: center; font-size: 104px; white-space: nowrap; }
+    </style>
+
+    <div id="s4-bg" class="clip" data-start="0" data-duration="6.2" data-track-index="0"></div>
+    <div id="s4-stage" class="clip" data-start="0" data-duration="6.2" data-track-index="1">
+      <div id="s4-cam"><div id="s4-shk">
+        <img id="s4-rovra" class="s4-logo" src="assets/brands/rovra-white.svg" alt="ROVRA">
+        <img id="s4-rcut" class="s4-logo" src="assets/brands/rcutone-white.png" alt="RcuT ONE">
+        <div id="s4-sweep"></div>
+        <div id="s4-t1" class="s4-disp"><span class="s4-mask"><span class="s4-w ">Few</span></span> <span class="s4-mask"><span class="s4-w ">brands.</span></span></div>
+        <div id="s4-t2" class="s4-disp"><span class="s4-mask"><span class="s4-w ">Every</span></span> <span class="s4-mask"><span class="s4-w ">one</span></span> <span class="s4-mask"><span class="s4-w s4-g" id="s4-earned">earned.</span></span></div>
+      </div></div>
+    </div>
+
+    <script src="assets/vendor/gsap.min.js"></script>
+    <script>
+      (function () {
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+        const SHK = "#s4-shk";
+
+        function shake(t, a) {
+          tl.to(SHK, { keyframes: [
+            { x: a, y: -a * 0.6, duration: 0.035 }, { x: -a * 0.8, y: a * 0.5, duration: 0.045 },
+            { x: a * 0.5, y: a * 0.3, duration: 0.05 }, { x: -a * 0.3, y: -a * 0.2, duration: 0.06 },
+            { x: 0, y: 0, duration: 0.08 } ] }, t);
+        }
+        function words(sel, times, opts) {
+          const els = document.querySelectorAll(sel);
+          els.forEach((el, i) => {
+            tl.fromTo(el, { yPercent: 105, opacity: 0, filter: "blur(10px)" },
+              { yPercent: 0, opacity: 1, filter: "blur(0px)", duration: (opts && opts.d) || 0.45, ease: "power3.out" }, times[i]);
+          });
+        }
+
+        // slow push-in on every shot
+        tl.fromTo("#s4-cam", { scale: 1.0 }, { scale: 1.06, duration: 6.2, ease: "none" }, 0);
+
+        // brand 1 alone in the center
+        tl.fromTo("#s4-rovra", { opacity: 0, scale: 1.12, filter: "blur(16px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.8, ease: "power3.out" }, 0.25);
+        tl.fromTo("#s4-sweep", { x: 0 }, { x: 2300, duration: 1.0, ease: "power2.inOut" }, 0.45);
+        // brand 1 slides left, brand 2 arrives in the center then settles right
+        tl.to("#s4-rovra", { x: -400, scale: 0.78, duration: 0.6, ease: "power3.inOut" }, 1.1);
+        tl.fromTo("#s4-rcut", { opacity: 0, x: 330, scale: 1.15, filter: "blur(16px)" }, { opacity: 1, x: 330, scale: 1, filter: "blur(0px)", duration: 0.7, ease: "power3.out" }, 1.7);
+        words("#s4-t1 .s4-w", [1.61, 1.84]);
+        words("#s4-t2 .s4-w", [3.15, 3.39, 3.86]);
+        tl.fromTo("#s4-earned", { scale: 1.2 }, { scale: 1, duration: 0.45, ease: "expo.out", transformOrigin: "50% 80%" }, 3.86);
+        shake(3.88, 10);
+
+        window.__timelines["s4-brands"] = tl;
+      })();
+    </script>
+  </div>
+</template>

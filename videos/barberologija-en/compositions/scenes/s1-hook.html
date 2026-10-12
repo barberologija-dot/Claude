@@ -1,0 +1,87 @@
+<template>
+  <div id="root" data-composition-id="s1-hook" data-start="0" data-duration="6.0" data-width="1920" data-height="1080">
+    <style>
+      @font-face { font-family: "Anton"; font-weight: 400; src: url("assets/fonts/anton-latin-400-normal.woff2") format("woff2"); }
+      @font-face { font-family: "Inter"; font-weight: 500; src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2"); }
+      @font-face { font-family: "Inter"; font-weight: 700; src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
+      @font-face { font-family: "Inter"; font-weight: 800; src: url("assets/fonts/inter-latin-800-normal.woff2") format("woff2"); }
+      @font-face { font-family: "IBM Plex Mono"; font-weight: 500; src: url("assets/fonts/ibm-plex-mono-latin-500-normal.woff2") format("woff2"); }
+
+      #root { width: 1920px; height: 1080px; position: relative; overflow: hidden; font-family: "Inter", sans-serif; color: #f2f2ee; }
+      .clip { position: absolute; inset: 0; }
+      #s1-bg { background: radial-gradient(ellipse 70% 60% at 50% 45%, #10130c 0%, #070707 70%); }
+      #s1-cam { position: absolute; inset: 0; transform-origin: 50% 45%; }
+      #s1-shk { position: absolute; inset: 0; }
+      .s1-disp { font-family: "Anton", sans-serif; font-weight: 400; text-transform: uppercase; letter-spacing: 0.01em; line-height: 0.95;
+        text-shadow: 0 10px 40px rgba(0,0,0,0.75), 0 2px 6px rgba(0,0,0,0.6); }
+      .s1-mono { font-family: "IBM Plex Mono", monospace; font-weight: 500; text-transform: uppercase; letter-spacing: 0.22em; }
+      .s1-g { color: #8bd124; text-shadow: 0 0 24px rgba(139,209,36,0.55), 0 0 70px rgba(139,209,36,0.25), 0 10px 40px rgba(0,0,0,0.7); }
+      .s1-mask { display: inline-block; overflow: hidden; vertical-align: bottom; padding: 0.06em 0.04em 0.02em; margin: 0 -0.04em; }
+      .s1-w { display: inline-block; }
+      .s1-shadow { filter: drop-shadow(0 30px 40px rgba(0,0,0,0.7)) drop-shadow(0 0 30px rgba(139,209,36,0.12)); }
+
+      #s1-a { position: absolute; left: 0; right: 0; top: 300px; text-align: center; font-size: 120px; color: #f2f2ee; white-space: nowrap; }
+      .s1-c { position: relative; display: inline-block; }
+      .s1-c0 { width: 0; height: 0.82em; }
+      .s1-k { position: absolute; right: -0.1em; top: 0.06em; width: 0.08em; height: 0.82em; background: #8bd124; box-shadow: 0 0 18px rgba(139,209,36,0.8); opacity: 0; }
+      #s1-b { position: absolute; left: 0; right: 0; top: 470px; text-align: center; font-size: 230px; white-space: nowrap; }
+    </style>
+
+    <div id="s1-bg" class="clip" data-start="0" data-duration="6.0" data-track-index="0"></div>
+    <div id="s1-stage" class="clip" data-start="0" data-duration="6.0" data-track-index="1">
+      <div id="s1-cam"><div id="s1-shk">
+        <div id="s1-a" class="s1-disp"><span class="s1-c s1-c0"><i class="s1-k" id="s1-k0"></i></span><span class="s1-c" id="s1-c1">W<i class="s1-k" id="s1-k1"></i></span><span class="s1-c" id="s1-c2">e<i class="s1-k" id="s1-k2"></i></span><span class="s1-c" id="s1-c3">&nbsp;<i class="s1-k" id="s1-k3"></i></span><span class="s1-c" id="s1-c4">d<i class="s1-k" id="s1-k4"></i></span><span class="s1-c" id="s1-c5">o<i class="s1-k" id="s1-k5"></i></span><span class="s1-c" id="s1-c6">n<i class="s1-k" id="s1-k6"></i></span><span class="s1-c" id="s1-c7">'<i class="s1-k" id="s1-k7"></i></span><span class="s1-c" id="s1-c8">t<i class="s1-k" id="s1-k8"></i></span><span class="s1-c" id="s1-c9">&nbsp;<i class="s1-k" id="s1-k9"></i></span><span class="s1-c" id="s1-c10">s<i class="s1-k" id="s1-k10"></i></span><span class="s1-c" id="s1-c11">e<i class="s1-k" id="s1-k11"></i></span><span class="s1-c" id="s1-c12">l<i class="s1-k" id="s1-k12"></i></span><span class="s1-c" id="s1-c13">l<i class="s1-k" id="s1-k13"></i></span><span class="s1-c" id="s1-c14">&nbsp;<i class="s1-k" id="s1-k14"></i></span><span class="s1-c" id="s1-c15">e<i class="s1-k" id="s1-k15"></i></span><span class="s1-c" id="s1-c16">v<i class="s1-k" id="s1-k16"></i></span><span class="s1-c" id="s1-c17">e<i class="s1-k" id="s1-k17"></i></span><span class="s1-c" id="s1-c18">r<i class="s1-k" id="s1-k18"></i></span><span class="s1-c" id="s1-c19">y<i class="s1-k" id="s1-k19"></i></span><span class="s1-c" id="s1-c20">t<i class="s1-k" id="s1-k20"></i></span><span class="s1-c" id="s1-c21">h<i class="s1-k" id="s1-k21"></i></span><span class="s1-c" id="s1-c22">i<i class="s1-k" id="s1-k22"></i></span><span class="s1-c" id="s1-c23">n<i class="s1-k" id="s1-k23"></i></span><span class="s1-c" id="s1-c24">g<i class="s1-k" id="s1-k24"></i></span><span class="s1-c" id="s1-c25">.<i class="s1-k" id="s1-k25"></i></span></div>
+        <div id="s1-b" class="s1-disp"><span class="s1-mask"><span class="s1-w ">Only</span></span> <span class="s1-mask"><span class="s1-w ">what</span></span> <span class="s1-mask"><span class="s1-w ">we</span></span> <span class="s1-mask"><span class="s1-w s1-g" id="s1-test">test.</span></span></div>
+      </div></div>
+    </div>
+
+    <script src="assets/vendor/gsap.min.js"></script>
+    <script>
+      (function () {
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+        const SHK = "#s1-shk";
+
+        function shake(t, a) {
+          tl.to(SHK, { keyframes: [
+            { x: a, y: -a * 0.6, duration: 0.035 }, { x: -a * 0.8, y: a * 0.5, duration: 0.045 },
+            { x: a * 0.5, y: a * 0.3, duration: 0.05 }, { x: -a * 0.3, y: -a * 0.2, duration: 0.06 },
+            { x: 0, y: 0, duration: 0.08 } ] }, t);
+        }
+        function words(sel, times, opts) {
+          const els = document.querySelectorAll(sel);
+          els.forEach((el, i) => {
+            tl.fromTo(el, { yPercent: 105, opacity: 0, filter: "blur(10px)" },
+              { yPercent: 0, opacity: 1, filter: "blur(0px)", duration: (opts && opts.d) || 0.45, ease: "power3.out" }, times[i]);
+          });
+        }
+
+        // slow push-in on every shot
+        tl.fromTo("#s1-cam", { scale: 1.0 }, { scale: 1.06, duration: 6.0, ease: "none" }, 0);
+
+        // build: caret blinks on black, then types (0.8-1.9); the caret rides the last typed glyph
+        const N = 25;
+        tl.fromTo("#s1-k0", { opacity: 0 }, { keyframes: [
+          { opacity: 1, duration: 0.01 }, { opacity: 1, duration: 0.24 }, { opacity: 0, duration: 0.01 }, { opacity: 0, duration: 0.2 },
+          { opacity: 1, duration: 0.01 }, { opacity: 1, duration: 0.3 }, { opacity: 0, duration: 0.01 } ] }, 0.0);
+        for (let i = 1; i <= N; i++) {
+          const t = 0.8 + (i - 1) * (1.1 / N);
+          tl.fromTo("#s1-c" + i, { opacity: 0 }, { opacity: 1, duration: 0.01 }, t);
+          tl.fromTo("#s1-k" + i, { opacity: 0 }, { keyframes: i < N
+            ? [ { opacity: 1, duration: 0.01 }, { opacity: 1, duration: 1.1 / N - 0.02 }, { opacity: 0, duration: 0.01 } ]
+            : [ { opacity: 1, duration: 0.01 }, { opacity: 1, duration: 0.2 }, { opacity: 0, duration: 0.01 }, { opacity: 0, duration: 0.15 }, { opacity: 1, duration: 0.01 }, { opacity: 1, duration: 0.05 }, { opacity: 0, duration: 0.15 } ] }, t);
+        }
+        // impact: line A lifts + dims, line B slams word by word
+        tl.to("#s1-a", { y: -60, scale: 0.72, opacity: 0.38, duration: 0.6, ease: "power3.out" }, 2.05);
+        words("#s1-b .s1-w", [2.22, 2.8, 2.95, 3.14], { d: 0.38 });
+        tl.fromTo("#s1-test", { scale: 1.25 }, { scale: 1, duration: 0.5, ease: "expo.out", transformOrigin: "50% 80%" }, 3.14);
+        shake(3.16, 14);
+        // release: glow breathes down
+        tl.to("#s1-test", { textShadow: "0 0 40px rgba(139,209,36,0.9), 0 0 120px rgba(139,209,36,0.45), 0 10px 40px rgba(0,0,0,0.7)", duration: 0.25 }, 3.16);
+        tl.to("#s1-test", { textShadow: "0 0 24px rgba(139,209,36,0.55), 0 0 70px rgba(139,209,36,0.25), 0 10px 40px rgba(0,0,0,0.7)", duration: 1.6, ease: "power2.out" }, 3.45);
+
+        window.__timelines["s1-hook"] = tl;
+      })();
+    </script>
+  </div>
+</template>
