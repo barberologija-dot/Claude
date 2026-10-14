@@ -1,5 +1,5 @@
 <template>
-  <div id="root" data-composition-id="main-shot" data-start="0" data-duration="17.0" data-width="1080" data-height="1920">
+  <div id="root" data-composition-id="main-shot" data-start="0" data-duration="19.2" data-width="1080" data-height="1920">
     <style>
       @font-face { font-family: "Inter"; font-weight: 300; src: url("assets/fonts/inter-latin-300-normal.woff2") format("woff2"); }
       @font-face { font-family: "Inter"; font-weight: 400; src: url("assets/fonts/inter-latin-400-normal.woff2") format("woff2"); }
@@ -13,64 +13,76 @@
       .mono { font-family: "IBM Plex Mono", monospace; font-weight: 500; text-transform: uppercase; letter-spacing: 0.16em; }
       .wd { display: inline-block; }
 
-      #m-bg { background: radial-gradient(ellipse 80% 55% at 50% 40%, #f7f6f2 0%, #efede7 60%, #e4e1d9 100%); }
+      #m-bg { background: radial-gradient(ellipse 80% 55% at 50% 40%, #f7f6f2 0%, #efede7 60%, #e2dfd6 100%); }
       #m-grid { opacity: 0; background-color: #f1efe9;
         background-image: linear-gradient(rgba(60,60,55,0.13) 1px, transparent 1px), linear-gradient(90deg, rgba(60,60,55,0.13) 1px, transparent 1px);
         background-size: 54px 54px; }
-      #m-streaks { position: absolute; inset: 0; }
-      .m-streak { position: absolute; height: 1px; background: linear-gradient(90deg, rgba(0,0,0,0), rgba(60,58,52,0.22)); transform-origin: 100% 50%; }
-      #m-stage { position: absolute; inset: 0; transform-origin: 565px 628px; }
+      #m-floor { position: absolute; left: -200px; right: -200px; top: 1090px; height: 900px;
+        background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.035) 12%, rgba(0,0,0,0) 55%); }
+      #m-stage { position: absolute; inset: 0; transform-origin: 602px 628px; }
       #m-shadow { position: absolute; left: 515px; top: 1104px; width: 381px; height: 46px; border-radius: 50%;
-        background: radial-gradient(closest-side, rgba(0,0,0,0.38), rgba(0,0,0,0)); filter: blur(4px); }
+        background: radial-gradient(closest-side, rgba(0,0,0,0.40), rgba(0,0,0,0)); filter: blur(4px); }
       #m-clip { position: absolute; left: 575px; top: 470px; height: 660px; filter: drop-shadow(0 18px 18px rgba(0,0,0,0.22)); }
+      #m-glint { position: absolute; left: 592px; top: 538px; width: 70px; height: 180px; border-radius: 50%; opacity: 0;
+        background: radial-gradient(closest-side, rgba(255,236,190,0.75), rgba(255,236,190,0)); mix-blend-mode: screen; }
       #m-wire { position: absolute; left: 575px; top: 470px; height: 660px; opacity: 0; }
       #m-mesh { position: absolute; left: 575px; top: 470px; width: 261px; height: 660px; opacity: 0;
         background-image: linear-gradient(rgba(40,40,36,0.35) 1px, transparent 1px), linear-gradient(90deg, rgba(40,40,36,0.35) 1px, transparent 1px);
         background-size: 22px 22px; -webkit-mask-image: url("assets/impact-mask.png"); mask-image: url("assets/impact-mask.png");
         -webkit-mask-size: 100% 100%; mask-size: 100% 100%; }
-      #m-bullet, #m-bulletw { position: absolute; left: 0; top: 597px; width: 230px; height: 63px; }
-      #m-bullet svg, #m-bulletw svg { display: block; filter: drop-shadow(0 10px 8px rgba(0,0,0,0.25)); }
-      #m-bulletw { opacity: 0; }
-      #m-trail { position: absolute; left: -200px; top: 627px; height: 3px; width: 400px; transform-origin: 0% 50%;
-        background: linear-gradient(90deg, rgba(120,118,110,0), rgba(120,118,110,0.45)); filter: blur(0.6px); }
+      /* the bullet rig: trail + mach cone + floor shadow all ride WITH the bullet, never ahead of the tip */
+      #m-rig, #m-rigw { position: absolute; left: 0; top: 597px; width: 230px; height: 63px; }
+      #m-rigw { opacity: 0; }
+      #m-bul { position: absolute; inset: 0; filter: drop-shadow(0 8px 6px rgba(0,0,0,0.22)); }
+      #m-bul svg { display: block; }
+      #m-wake { position: absolute; right: 224px; top: 22px; width: 520px; height: 18px; border-radius: 9px;
+        background: linear-gradient(90deg, rgba(150,148,140,0), rgba(150,148,140,0.10) 60%, rgba(150,148,140,0.22)); filter: blur(5px); }
+      #m-mach { position: absolute; left: 106px; top: -59px; width: 140px; height: 180px; opacity: 0.55; }
+      #m-bshadow { position: absolute; left: 10px; top: 511px; width: 200px; height: 14px; border-radius: 50%;
+        background: radial-gradient(closest-side, rgba(0,0,0,0.22), rgba(0,0,0,0)); filter: blur(5px); }
+      #m-sheen { position: absolute; inset: 6px 30px 30px 6px; border-radius: 30px; opacity: 0.5;
+        background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,250,225,0.55) 50%, rgba(255,255,255,0)); mix-blend-mode: screen; }
       .m-lab { position: absolute; font-size: 17px; letter-spacing: 0.06em; text-transform: none; color: #4b4b46; opacity: 0; white-space: nowrap; }
       #m-hud { position: absolute; inset: 0; }
       .m-corner { position: absolute; width: 46px; height: 46px; border-color: rgba(30,30,28,0.55); border-style: solid; border-width: 0; }
       #m-rec { position: absolute; left: 70px; top: 96px; font-size: 22px; color: #3b3a36; }
       #m-rec i { display: inline-block; width: 14px; height: 14px; border-radius: 50%; background: #d23a2a; margin-right: 12px; vertical-align: 1px; }
       #m-fps { position: absolute; right: 70px; top: 96px; font-size: 22px; color: #3b3a36; }
-      #m-count { position: absolute; left: 0; right: 0; top: 1330px; z-index: 5; text-align: center; }
+      #m-count { position: absolute; left: 0; right: 0; top: 1420px; text-align: center; z-index: 5; }
       #m-count .mono { font-size: 24px; color: #55544f; }
       #m-num { font-family: "Inter", sans-serif; font-weight: 300; font-size: 168px; line-height: 1.05; letter-spacing: -0.02em; color: #1c1c1a; font-variant-numeric: tabular-nums; }
-      .m-txt { position: absolute; left: 60px; right: 60px; top: 1300px; z-index: 5; text-align: center; opacity: 0; }
+      .m-txt { position: absolute; left: 60px; right: 60px; top: 1300px; text-align: center; opacity: 0; z-index: 5; }
       .m-l1 { font-size: 46px; font-weight: 400; color: #6d6b66; }
-      .m-l2 { font-size: 82px; font-weight: 500; letter-spacing: -0.02em; margin-top: 8px; color: #1c1c1a; }
+      .m-l2 { font-size: 78px; font-weight: 500; letter-spacing: -0.02em; margin-top: 8px; color: #1c1c1a; }
       .m-b { font-weight: 700; }
+      .m-acc { font-weight: 700; color: #4e8a0e; }
     </style>
-    <div id="m-bg" class="clip" data-start="0" data-duration="17.0" data-track-index="0"></div>
-    <div id="m-grid" class="clip" data-start="0" data-duration="17.0" data-track-index="1"></div>
-    <div id="m-world" class="clip" data-start="0" data-duration="17.0" data-track-index="2" data-layout-allow-overflow>
-      <div id="m-streaks">
-        <div class="m-streak" style="left:-80px;top:380px;width:640px;transform:rotate(14deg)"></div>
-        <div class="m-streak" style="left:-40px;top:760px;width:620px;transform:rotate(-9deg)"></div>
-        <div class="m-streak" style="left:60px;top:300px;width:520px;transform:rotate(24deg)"></div>
-        <div class="m-streak" style="left:-60px;top:880px;width:560px;transform:rotate(-17deg)"></div>
-      </div>
+    <div id="m-bg" class="clip" data-start="0" data-duration="19.2" data-track-index="0"></div>
+    <div id="m-grid" class="clip" data-start="0" data-duration="19.2" data-track-index="1"></div>
+    <div id="m-world" class="clip" data-start="0" data-duration="19.2" data-track-index="2" data-layout-allow-overflow>
       <div id="m-stage" data-layout-allow-overflow>
+        <div id="m-floor"></div>
         <div id="m-shadow"></div>
         <img id="m-clip" src="assets/rovra-impact-zelena.png" alt="ROVRA Impact">
+        <div id="m-glint"></div>
         <img id="m-wire" src="assets/impact-wire.png" alt="">
         <div id="m-mesh"></div>
-        <div id="m-trail"></div>
-        <div id="m-bullet"><svg viewBox="0 0 220 60" width="230" height="63">
+        <div id="m-rig" data-layout-allow-overflow>
+          <div id="m-bshadow"></div>
+          <div id="m-wake"></div>
+          <div id="m-mach"><svg viewBox="0 0 140 180" width="140" height="180"><g fill="none" stroke="#6f6d66" stroke-width="1.4" stroke-linecap="round">
+  <path d="M120 90 C 96 74, 60 46, 8 6" opacity="0.7"/><path d="M120 90 C 96 106, 60 134, 8 174" opacity="0.7"/>
+  <path d="M104 90 C 84 78, 54 56, 20 30" opacity="0.35"/><path d="M104 90 C 84 102, 54 124, 20 150" opacity="0.35"/></g></svg></div>
+          <div id="m-bul"><svg viewBox="0 0 220 60" width="230" height="63">
   <defs><linearGradient id="brass" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0" stop-color="#4a3210"/><stop offset="0.22" stop-color="#c9963e"/><stop offset="0.38" stop-color="#f4d58c"/>
     <stop offset="0.55" stop-color="#b98a37"/><stop offset="0.85" stop-color="#6b4a17"/><stop offset="1" stop-color="#2e1f08"/></linearGradient></defs>
   <path d="M4 8 H112 C160 8 196 20 216 30 C196 40 160 52 112 52 H4 Z" fill="url(#brass)"/>
   <rect x="2" y="9" width="10" height="42" rx="2" fill="#5b3f14" opacity="0.8"/>
   <path d="M112 10 V50" stroke="#3b2909" stroke-width="2" opacity="0.35"/>
-</svg></div>
-        <div id="m-bulletw"><svg viewBox="0 0 220 60" width="230" height="63"><g fill="none" stroke="#2c2d29" stroke-width="2">
+</svg><div id="m-sheen"></div></div>
+        </div>
+        <div id="m-rigw"><svg viewBox="0 0 220 60" width="230" height="63"><g fill="none" stroke="#2c2d29" stroke-width="2">
   <path d="M4 8 H112 C160 8 196 20 216 30 C196 40 160 52 112 52 H4 Z"/>
   <path d="M26 8 V52 M48 8 V52 M70 8 V52 M92 8 V52 M112 8 V52 M140 11 V49 M168 17 V43 M194 24 V36"/><path d="M4 30 H216"/></g></svg></div>
         <div class="m-lab mono" id="m-lab1" style="left:120px;top:350px">clipper.obj &nbsp;|&nbsp; 0 polygons wasted</div>
@@ -78,14 +90,14 @@
         <div class="m-lab mono" id="m-lab3" style="left:120px;top:386px">velocity = 0.00001x &nbsp;|&nbsp; impact = never</div>
       </div>
     </div>
-    <div id="m-ui" class="clip" data-start="0" data-duration="17.0" data-track-index="3">
+    <div id="m-ui" class="clip" data-start="0" data-duration="19.2" data-track-index="3">
       <div id="m-hud"><div class="m-corner" style="left:40px;top:150px;border-left-width:2px;border-top-width:2px"></div><div class="m-corner" style="right:40px;top:150px;border-right-width:2px;border-top-width:2px"></div><div class="m-corner" style="left:40px;bottom:140px;border-left-width:2px;border-bottom-width:2px"></div><div class="m-corner" style="right:40px;bottom:140px;border-right-width:2px;border-bottom-width:2px"></div>
         <div id="m-rec" class="mono"><i></i>REC &nbsp;00:00:00:<span id="m-tc">06</span></div>
         <div id="m-fps" class="mono">100,000 FPS</div>
       </div>
       <div id="m-count"><div class="mono">Frames to impact</div><div id="m-num">185</div></div>
-      <div class="m-txt" id="m-t1"><div class="m-l1"><span class="wd ">You</span> <span class="wd ">just</span> <span class="wd ">watched</span> <span class="wd ">a</span> <span class="wd ">bullet</span></div><div class="m-l2"><span class="wd ">for</span> <span class="wd m-b">7</span> <span class="wd m-b">seconds.</span></div></div>
-      <div class="m-txt" id="m-t2"><div class="m-l1"><span class="wd ">A</span> <span class="wd ">bullet</span></div><div class="m-l2"><span class="wd ">that</span> <span class="wd m-b">doesn't</span> <span class="wd m-b">exist.</span></div></div>
+      <div class="m-txt" id="m-t1"><div class="m-l1"><span class="wd ">You</span> <span class="wd ">just</span> <span class="wd ">watched</span> <span class="wd ">a</span> <span class="wd ">bullet</span></div><div class="m-l2"><span class="wd ">fly</span> <span class="wd ">toward</span> <span class="wd m-acc">Impact</span> <span class="wd ">for</span> <span class="wd m-b">7</span> <span class="wd m-b">seconds.</span></div></div>
+      <div class="m-txt" id="m-t2"><div class="m-l1"><span class="wd ">A</span> <span class="wd ">bullet</span></div><div class="m-l2"><span class="wd ">that</span> <span class="wd m-b">doesn't</span> <span class="wd m-b">even</span> <span class="wd m-b">exist.</span></div></div>
       <div class="m-txt" id="m-t3"><div class="m-l1"><span class="wd ">And</span> <span class="wd ">you're</span> <span class="wd ">still</span> <span class="wd ">here,</span></div><div class="m-l2"><span class="wd ">waiting</span> <span class="wd ">for</span> <span class="wd ">it</span> <span class="wd ">to</span> <span class="wd m-b">hit.</span></div></div>
     </div>
     <script src="assets/vendor/gsap.min.js"></script>
@@ -98,8 +110,7 @@
             { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.35, ease: "power2.out" }, times[i]));
         }
 
-        // ---- counter: one progress tween, piecewise-mapped to the frame count (seek-safe) ----
-        const CK = [[0,185],[0.6,162],[1.0,165],[1.5,128],[2.0,100],[2.5,78],[3.0,61],[3.5,48],[4.0,37],[4.5,29],[5.0,23],[5.5,18],[6.0,14],[6.5,11],[7.0,9],[7.5,7]];
+        const CK = [[0,185],[0.6,162],[1.0,165],[1.5,128],[2.0,100],[2.5,78],[3.0,61],[3.5,48],[4.0,37],[4.5,29],[5.0,23],[5.5,18],[6.0,14],[6.5,10],[7.0,6],[7.3,3],[7.55,1]];
         const numEl = document.getElementById("m-num");
         const P = { t: 0 };
         function countAt(t) {
@@ -107,52 +118,47 @@
             const a = CK[i - 1], b = CK[i], u = (t - a[0]) / (b[0] - a[0]); return Math.round(a[1] + (b[1] - a[1]) * u); }
           return CK[CK.length - 1][1];
         }
-        tl.fromTo(P, { t: 0 }, { t: 7.5, duration: 7.5, ease: "none", onUpdate: () => {
+        tl.fromTo(P, { t: 0 }, { t: 7.6, duration: 7.6, ease: "none", onUpdate: () => {
           const v = countAt(P.t); numEl.textContent = String(v).padStart(3, "0"); numEl.style.color = v < 30 ? "#4e8a0e" : "#1c1c1a"; } }, 0);
         tl.fromTo("#m-count", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.1);
-        tl.to("#m-count", { opacity: 0, duration: 0.2 }, 7.6);
-        // timecode creeps one frame
+        tl.to("#m-count", { opacity: 0, duration: 0.2 }, 7.7);
         tl.fromTo("#m-tc", { opacity: 1 }, { opacity: 1, duration: 0.01, onComplete: () => { document.getElementById("m-tc").textContent = "07"; },
           onReverseComplete: () => { document.getElementById("m-tc").textContent = "06"; } }, 9.0);
-        // REC dot blink (explicit keyframes, no repeat)
-        tl.fromTo("#m-rec i", { opacity: 1 }, { keyframes: [{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 }] }, 0);
+        tl.fromTo("#m-rec i", { opacity: 1 }, { keyframes: [{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 }] }, 0);
 
-        // ---- shot 1 (0-7.6): bullet crawls in, camera pushes toward the contact point ----
-        tl.fromTo("#m-bullet", { x: -60 }, { x: 275, duration: 7.6, ease: "none" }, 0);
-        tl.fromTo("#m-trail", { scaleX: 0.6 }, { scaleX: 2.6, duration: 7.6, ease: "none" }, 0);
-        tl.fromTo("#m-stage", { scale: 1 }, { scale: 1.45, duration: 7.6, ease: "power1.in" }, 0);
-        tl.fromTo("#m-streaks", { opacity: 0.5, x: 0 }, { opacity: 1, x: 40, duration: 7.6, ease: "none" }, 0);
-        // ---- cut to wide (7.6): bullet nearly touching, still creeping ----
+        // ---- shot 1: the bullet crawls all the way in (decelerating), camera pushes to the contact point ----
+        tl.fromTo("#m-rig", { x: -80 }, { x: 362, duration: 7.6, ease: "power1.out" }, 0);
+        tl.fromTo("#m-stage", { scale: 1 }, { scale: 1.5, duration: 7.6, ease: "power1.in" }, 0);
+        tl.fromTo("#m-sheen", { x: -40 }, { x: 40, duration: 7.6, ease: "none" }, 0);
+        tl.fromTo("#m-glint", { opacity: 0 }, { opacity: 0.8, duration: 4.0, ease: "power2.in" }, 3.6);
+        // ---- cut to wide: tip a breath away, still creeping, never touching ----
         tl.to("#m-stage", { scale: 1.08, duration: 0.01 }, 7.6);
-        tl.to("#m-stage", { scale: 1.16, duration: 9.39, ease: "none" }, 7.61);
-        tl.to("#m-bullet", { x: 323, duration: 9.4, ease: "none" }, 7.6);
-        tl.to("#m-trail", { scaleX: 3.0, duration: 9.4, ease: "none" }, 7.6);
-        // text 1
-        tl.fromTo("#m-t1", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 7.85);
-        words("#m-t1 .m-l1 .wd", [7.85, 7.95, 8.15, 8.45, 8.6]);
-        words("#m-t1 .m-l2 .wd", [9.05, 9.35, 9.6]);
-        tl.to("#m-t1", { opacity: 0, duration: 0.2 }, 11.75);
-        // ---- wireframe (12.0-14.0) ----
-        tl.to("#m-grid", { opacity: 1, duration: 0.08 }, 12.0);
-        tl.to(["#m-clip", "#m-bullet", "#m-shadow", "#m-streaks", "#m-trail"], { opacity: 0, duration: 0.08 }, 12.0);
-        tl.to(["#m-wire", "#m-mesh", "#m-bulletw"], { opacity: 1, duration: 0.08 }, 12.0);
-        tl.fromTo("#m-bulletw", { x: 315 }, { x: 319, duration: 2.0, ease: "none" }, 12.0);
-        tl.to("#m-hud", { opacity: 0.35, duration: 0.1 }, 12.0);
-        ["#m-lab1", "#m-lab2", "#m-lab3"].forEach((s, i) => tl.fromTo(s, { opacity: 0 }, { opacity: 1, duration: 0.25 }, 12.15 + i * 0.18));
-        tl.fromTo("#m-t2", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 12.2);
-        words("#m-t2 .m-l1 .wd", [12.2, 12.35]);
-        words("#m-t2 .m-l2 .wd", [12.75, 13.0, 13.2]);
-        // glitch flicker back to the render (14.0)
-        tl.to("#m-grid", { keyframes: [ { opacity: 0.2, duration: 0.04 }, { opacity: 1, duration: 0.04 }, { opacity: 0, duration: 0.05 } ] }, 13.9);
-        tl.to(["#m-wire", "#m-mesh", "#m-bulletw", "#m-lab1", "#m-lab2", "#m-lab3", "#m-t2"], { opacity: 0, duration: 0.05 }, 14.0);
-        tl.to(["#m-clip", "#m-bullet", "#m-shadow", "#m-streaks", "#m-trail"], { opacity: 1, duration: 0.05 }, 14.0);
-        tl.to("#m-hud", { opacity: 1, duration: 0.1 }, 14.0);
-        // text 3
-        tl.fromTo("#m-t3", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 14.15);
-        words("#m-t3 .m-l1 .wd", [14.15, 14.35, 14.55, 14.75]);
-        words("#m-t3 .m-l2 .wd", [15.1, 15.25, 15.4, 15.5, 15.85]);
+        tl.to("#m-stage", { scale: 1.18, duration: 11.59, ease: "none" }, 7.61);
+        tl.to("#m-rig", { x: 373, duration: 11.60, ease: "power2.out" }, 7.6);
+        // text 1 on the VO
+        tl.fromTo("#m-t1", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 7.9);
+        words("#m-t1 .m-l1 .wd", [7.9, 8.05, 8.28, 8.67, 8.71]);
+        words("#m-t1 .m-l2 .wd", [9.04, 9.44, 9.76, 10.49, 10.74, 11.11]);
+        tl.to("#m-t1", { opacity: 0, duration: 0.2 }, 12.4);
+        // ---- wireframe ----
+        tl.to("#m-grid", { opacity: 1, duration: 0.08 }, 12.6);
+        tl.to(["#m-clip", "#m-rig", "#m-shadow", "#m-floor", "#m-glint"], { opacity: 0, duration: 0.08 }, 12.6);
+        tl.to(["#m-wire", "#m-mesh", "#m-rigw"], { opacity: 1, duration: 0.08 }, 12.6);
+        tl.fromTo("#m-rigw", { x: 367 }, { x: 370, duration: 3.0, ease: "none" }, 12.6);
+        tl.to("#m-hud", { opacity: 0.35, duration: 0.1 }, 12.6);
+        ["#m-lab1", "#m-lab2", "#m-lab3"].forEach((s, i) => tl.fromTo(s, { opacity: 0 }, { opacity: 1, duration: 0.25 }, 12.75 + i * 0.18));
+        tl.fromTo("#m-t2", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 12.8);
+        words("#m-t2 .m-l1 .wd", [12.8, 12.9]);
+        words("#m-t2 .m-l2 .wd", [13.41, 13.59, 13.89, 14.19]);
+        tl.to("#m-grid", { keyframes: [ { opacity: 0.2, duration: 0.04 }, { opacity: 1, duration: 0.04 }, { opacity: 0, duration: 0.05 } ] }, 15.5);
+        tl.to(["#m-wire", "#m-mesh", "#m-rigw", "#m-lab1", "#m-lab2", "#m-lab3", "#m-t2"], { opacity: 0, duration: 0.05 }, 15.6);
+        tl.to(["#m-clip", "#m-rig", "#m-shadow", "#m-floor", "#m-glint"], { opacity: 1, duration: 0.05 }, 15.6);
+        tl.to("#m-hud", { opacity: 1, duration: 0.1 }, 15.6);
+        tl.fromTo("#m-t3", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 15.8);
+        words("#m-t3 .m-l1 .wd", [15.8, 15.98, 16.08, 16.41]);
+        words("#m-t3 .m-l2 .wd", [16.83, 17.26, 17.48, 17.57, 17.66]);
 
-        tl.to({}, { duration: 17.0 }, 0);
+        tl.to({}, { duration: 19.2 }, 0);
         window.__timelines["main-shot"] = tl;
       })();
     </script>

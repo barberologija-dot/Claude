@@ -1,5 +1,5 @@
 <template>
-  <div id="root" data-composition-id="endcard" data-start="0" data-duration="2.4" data-width="1080" data-height="1920">
+  <div id="root" data-composition-id="endcard" data-start="0" data-duration="2.6" data-width="1080" data-height="1920">
     <style>
       @font-face { font-family: "Inter"; font-weight: 300; src: url("assets/fonts/inter-latin-300-normal.woff2") format("woff2"); }
       @font-face { font-family: "Inter"; font-weight: 400; src: url("assets/fonts/inter-latin-400-normal.woff2") format("woff2"); }
@@ -21,10 +21,10 @@
       #e-url { position: absolute; left: 0; right: 0; top: 1140px; text-align: center; font-size: 66px; font-weight: 700; color: #8bd124;
         text-shadow: 0 0 22px rgba(139,209,36,0.6); }
     </style>
-    <div id="e-bg" class="clip" data-start="0" data-duration="2.4" data-track-index="0"></div>
-    <div id="e-layer" class="clip" data-start="0" data-duration="2.4" data-track-index="1">
+    <div id="e-bg" class="clip" data-start="0" data-duration="2.6" data-track-index="0"></div>
+    <div id="e-layer" class="clip" data-start="0" data-duration="2.6" data-track-index="1">
       <div id="e-logo"><img id="e-outline" src="assets/logo-outline.svg" alt=""><img id="e-letters" src="assets/logo-letters.svg" alt="Barberologija"></div>
-      <div id="e-sub" class="mono">ROVRA Impact · tested behind the chair</div>
+      <div id="e-sub" class="mono">ROVRA Impact · order now</div>
       <div id="e-url">barberologija.si</div>
     </div>
     <script src="assets/vendor/gsap.min.js"></script>
@@ -43,7 +43,7 @@
         tl.fromTo("#e-sub", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.4 }, 0.9);
         tl.fromTo("#e-url", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 1.1);
 
-        tl.to({}, { duration: 2.4 }, 0);
+        tl.to({}, { duration: 2.6 }, 0);
         window.__timelines["endcard"] = tl;
       })();
     </script>

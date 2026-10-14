@@ -1,5 +1,5 @@
 <template>
-  <div id="root" data-composition-id="phone" data-start="0" data-duration="4.4" data-width="1080" data-height="1920">
+  <div id="root" data-composition-id="phone" data-start="0" data-duration="9.6" data-width="1080" data-height="1920">
     <style>
       @font-face { font-family: "Inter"; font-weight: 300; src: url("assets/fonts/inter-latin-300-normal.woff2") format("woff2"); }
       @font-face { font-family: "Inter"; font-weight: 400; src: url("assets/fonts/inter-latin-400-normal.woff2") format("woff2"); }
@@ -13,40 +13,43 @@
       .mono { font-family: "IBM Plex Mono", monospace; font-weight: 500; text-transform: uppercase; letter-spacing: 0.16em; }
       .wd { display: inline-block; }
 
-      #p-bg { background: radial-gradient(ellipse 80% 55% at 50% 45%, #f7f6f2 0%, #efede7 60%, #e4e1d9 100%); }
-      #p-phone { position: absolute; left: 240px; top: 560px; width: 600px; height: 1230px; border-radius: 74px; background: #111;
+      #p-bg { background: radial-gradient(ellipse 80% 55% at 50% 45%, #f7f6f2 0%, #efede7 60%, #e2dfd6 100%); }
+      #p-phone { position: absolute; left: 240px; top: 600px; width: 600px; height: 1230px; border-radius: 74px; background: #111;
         padding: 14px; box-shadow: 0 40px 70px rgba(0,0,0,0.28), 0 10px 20px rgba(0,0,0,0.18); transform-origin: 50% 40%; }
       #p-screen { position: relative; width: 100%; height: 100%; border-radius: 60px; overflow: hidden; background: #f3f1ec; }
       #p-feed { position: absolute; inset: 0; }
       #p-feed .p-top { position: absolute; left: 0; right: 0; top: 44px; text-align: center; font-size: 22px; font-weight: 600; }
       #p-feed .p-time { position: absolute; left: 44px; top: 22px; font-size: 18px; font-weight: 600; }
       #p-fclip { position: absolute; left: 290px; top: 360px; height: 340px; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.22)); }
-      #p-fbul { position: absolute; left: 150px; top: 425px; width: 115px; height: 32px; }
-      #p-ftrail { position: absolute; left: 0; top: 440px; width: 160px; height: 2px; background: linear-gradient(90deg, rgba(120,118,110,0), rgba(120,118,110,0.5)); }
+      #p-fbul { position: absolute; left: 189px; top: 425px; width: 115px; height: 32px; }
+      #p-fwake { position: absolute; right: 110px; top: 7px; width: 240px; height: 18px; border-radius: 9px;
+        background: linear-gradient(90deg, rgba(150,148,140,0), rgba(150,148,140,0.22)); filter: blur(4px); }
       .p-ic { position: absolute; right: 30px; width: 30px; height: 30px; border: 2.5px solid #1c1c1a; border-radius: 50%; }
       #p-handle { position: absolute; left: 34px; bottom: 120px; font-size: 22px; font-weight: 600; display: flex; align-items: center; gap: 12px; }
       #p-handle i { width: 36px; height: 36px; border-radius: 50%; background: #0d0d0d; display: inline-block; box-shadow: inset 0 0 0 3px #8bd124; }
       #p-bar { position: absolute; left: 34px; right: 34px; bottom: 96px; height: 3px; background: #1c1c1a; border-radius: 2px; }
+      #p-sitewrap { position: absolute; inset: 0; overflow: hidden; background: #ffffff; }
       #p-site { position: absolute; left: 0; top: 0; width: 100%; }
       #p-site img { display: block; width: 100%; }
-      #p-sitewrap { position: absolute; inset: 0; overflow: hidden; background: #ffffff; }
       #p-url { position: absolute; left: 50%; bottom: 26px; transform: translateX(-50%); padding: 12px 28px; border-radius: 40px; background: rgba(255,255,255,0.94);
         font-size: 24px; font-weight: 600; box-shadow: 0 6px 18px rgba(0,0,0,0.18); white-space: nowrap; }
-      #p-tap { position: absolute; left: 240px; top: 470px; width: 90px; height: 90px; border-radius: 50%; border: 4px solid rgba(78,138,14,0.9); opacity: 0; }
+      #p-cart { position: absolute; left: 50%; bottom: 96px; transform: translateX(-50%); padding: 18px 44px; border-radius: 14px; background: #1c1c1a; color: #fff;
+        font-size: 26px; font-weight: 700; letter-spacing: 0.04em; white-space: nowrap; box-shadow: 0 10px 22px rgba(0,0,0,0.25); }
+      #p-tap { position: absolute; left: 255px; top: 470px; width: 90px; height: 90px; border-radius: 50%; border: 4px solid rgba(78,138,14,0.9); opacity: 0; }
       .p-txt { position: absolute; left: 40px; right: 40px; top: 250px; text-align: center; opacity: 0; }
-      .p-l1 { font-size: 44px; font-weight: 400; color: #6d6b66; }
-      .p-l2 { font-size: 72px; font-weight: 600; letter-spacing: -0.02em; margin-top: 6px; }
+      .p-l1 { font-size: 46px; font-weight: 400; color: #6d6b66; }
+      .p-l2 { font-size: 76px; font-weight: 600; letter-spacing: -0.02em; margin-top: 6px; }
       .p-g { color: #4e8a0e; }
     </style>
-    <div id="p-bg" class="clip" data-start="0" data-duration="4.4" data-track-index="0"></div>
-    <div id="p-layer" class="clip" data-start="0" data-duration="4.4" data-track-index="1" data-layout-allow-overflow>
-      <div class="p-txt" id="p-t1"><div class="p-l1"><span class="wd ">Now</span> <span class="wd ">imagine</span></div><div class="p-l2"><span class="wd ">it's</span> <span class="wd ">your</span> <span class="wd ">next</span> <span class="wd ">clipper.</span></div></div>
-      <div class="p-txt" id="p-t2"><div class="p-l1"><span class="wd ">Find</span> <span class="wd ">it</span> <span class="wd ">at</span></div><div class="p-l2 p-g"><span class="wd ">barberologija.si</span></div></div>
+    <div id="p-bg" class="clip" data-start="0" data-duration="9.6" data-track-index="0"></div>
+    <div id="p-layer" class="clip" data-start="0" data-duration="9.6" data-track-index="1" data-layout-allow-overflow>
+      <div class="p-txt" id="p-t1"><div class="p-l1"><span class="wd ">Now</span> <span class="wd ">imagine</span></div><div class="p-l2"><span class="wd p-g">Impact</span> <span class="wd ">does</span> <span class="wd ">exist.</span></div></div>
+      <div class="p-txt" id="p-t2"><div class="p-l1"><span class="wd ">It's</span> <span class="wd ">real.</span></div><div class="p-l2"><span class="wd ">And</span> <span class="wd ">it</span> <span class="wd ">can</span> <span class="wd ">be</span> <span class="wd p-g">yours.</span></div></div>
+      <div class="p-txt" id="p-t3"><div class="p-l1"><span class="wd ">Visit</span> <span class="wd ">our</span> <span class="wd ">shop</span></div><div class="p-l2"><span class="wd ">and</span> <span class="wd ">order</span> <span class="wd ">it</span> <span class="wd p-g">now.</span></div></div>
       <div id="p-phone" data-layout-allow-overflow><div id="p-screen">
         <div id="p-feed">
           <div class="p-time">9:41</div><div class="p-top">For you</div>
-          <div id="p-ftrail"></div>
-          <div id="p-fbul"><svg viewBox="0 0 220 60" width="115" height="32">
+          <div id="p-fbul"><div id="p-fwake"></div><svg viewBox="0 0 220 60" width="115" height="32">
   <defs><linearGradient id="brass2" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0" stop-color="#4a3210"/><stop offset="0.22" stop-color="#c9963e"/><stop offset="0.38" stop-color="#f4d58c"/>
     <stop offset="0.55" stop-color="#b98a37"/><stop offset="0.85" stop-color="#6b4a17"/><stop offset="1" stop-color="#2e1f08"/></linearGradient></defs>
@@ -61,6 +64,7 @@
           <div id="p-tap"></div>
         </div>
         <div id="p-sitewrap"><div id="p-site"><img src="assets/site-impact.png" alt="barberologija.si – ROVRA Impact"></div></div>
+        <div id="p-cart">ORDER NOW</div>
         <div id="p-url">barberologija.si</div>
       </div></div>
     </div>
@@ -74,24 +78,29 @@
             { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.35, ease: "power2.out" }, times[i]));
         }
 
-        // phone frame closes in around the shot (zoom out)
         tl.fromTo("#p-phone", { scale: 1.75 }, { scale: 1, duration: 0.8, ease: "power3.inOut" }, 0);
-        tl.fromTo("#p-fbul", { x: 0 }, { x: 20, duration: 2.0, ease: "none" }, 0);
-        tl.fromTo("#p-t1", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 0.45);
-        words("#p-t1 .p-l1 .wd", [0.45, 0.6]);
-        words("#p-t1 .p-l2 .wd", [0.9, 1.05, 1.2, 1.4]);
+        // the feed version: the bullet is already there, a hair from the clipper
+        tl.fromTo("#p-t1", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 0.4);
+        words("#p-t1 .p-l1 .wd", [0.4, 0.77]);
+        words("#p-t1 .p-l2 .wd", [1.28, 1.81, 2.04]);
+        tl.to("#p-t1", { opacity: 0, duration: 0.2 }, 3.15);
+        tl.fromTo("#p-t2", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 3.4);
+        words("#p-t2 .p-l1 .wd", [3.4, 3.62]);
+        words("#p-t2 .p-l2 .wd", [4.1, 4.2, 4.29, 4.47, 4.66]);
         // tap -> the shop opens on the clipper's product page
-        tl.fromTo("#p-tap", { opacity: 0, scale: 0.4 }, { keyframes: [ { opacity: 1, scale: 1, duration: 0.18 }, { opacity: 0, scale: 1.4, duration: 0.3 } ] }, 1.95);
-        tl.fromTo("#p-sitewrap", { yPercent: 100 }, { yPercent: 0, duration: 0.55, ease: "power3.out" }, 2.15);
-        tl.fromTo("#p-site", { y: 0 }, { y: -110, duration: 1.9, ease: "power1.inOut" }, 2.5);
-        tl.fromTo("#p-url", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 2.5);
-        tl.to("#p-t1", { opacity: 0, duration: 0.2 }, 2.15);
-        tl.fromTo("#p-t2", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 2.35);
-        words("#p-t2 .p-l1 .wd", [2.35, 2.5]);
-        words("#p-t2 .p-l2 .wd", [2.8]);
-        tl.fromTo("#p-phone", { y: 0 }, { y: -16, duration: 2.0, ease: "sine.inOut" }, 2.4);
+        tl.fromTo("#p-tap", { opacity: 0, scale: 0.4 }, { keyframes: [ { opacity: 1, scale: 1, duration: 0.18 }, { opacity: 0, scale: 1.4, duration: 0.3 } ] }, 5.85);
+        tl.fromTo("#p-sitewrap", { yPercent: 100 }, { yPercent: 0, duration: 0.55, ease: "power3.out" }, 6.05);
+        tl.fromTo("#p-site", { y: 0 }, { y: -130, duration: 3.0, ease: "power1.inOut" }, 6.45);
+        tl.fromTo("#p-url", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 6.35);
+        tl.fromTo("#p-cart", { opacity: 0, y: 30, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: "back.out(2)" }, 7.55);
+        tl.fromTo("#p-cart", { scale: 1 }, { keyframes: [ { scale: 0.94, duration: 0.08 }, { scale: 1, duration: 0.2 } ], immediateRender: false }, 8.26);
+        tl.to("#p-t2", { opacity: 0, duration: 0.2 }, 6.15);
+        tl.fromTo("#p-t3", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 6.4);
+        words("#p-t3 .p-l1 .wd", [6.4, 6.77, 6.91]);
+        words("#p-t3 .p-l2 .wd", [7.43, 7.55, 7.86, 7.96]);
+        tl.fromTo("#p-phone", { y: 0 }, { y: -16, duration: 3.0, ease: "sine.inOut" }, 6.45);
 
-        tl.to({}, { duration: 4.4 }, 0);
+        tl.to({}, { duration: 9.6 }, 0);
         window.__timelines["phone"] = tl;
       })();
     </script>
