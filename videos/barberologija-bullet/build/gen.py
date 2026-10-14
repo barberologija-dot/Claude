@@ -67,8 +67,8 @@ def ws(text, cls=""):
 import json
 VO = {int(k): v for k, v in json.load(open("build/vo_words.json")).items()}
 # VO placement (global seconds) — line index -> start
-VO_AT = {1: 7.9, 2: 12.8, 3: 15.8, 4: 19.6, 5: 22.6, 6: 25.6}
-T_MAIN, T_PHONE, T_END = 19.2, 9.6, 2.6
+VO_AT = {1: 7.9, 2: 12.8, 3: 15.8, 4: 19.5, 5: 21.7, 6: 23.8}
+T_MAIN, T_PHONE, T_END = 19.2, 7.2, 2.6
 TOTAL = round(T_MAIN + T_PHONE + T_END, 2)
 
 

@@ -1,5 +1,5 @@
 <template>
-  <div id="root" data-composition-id="phone" data-start="0" data-duration="9.6" data-width="1080" data-height="1920">
+  <div id="root" data-composition-id="phone" data-start="0" data-duration="7.2" data-width="1080" data-height="1920">
     <style>
       @font-face { font-family: "Inter"; font-weight: 300; src: url("assets/fonts/inter-latin-300-normal.woff2") format("woff2"); }
       @font-face { font-family: "Inter"; font-weight: 400; src: url("assets/fonts/inter-latin-400-normal.woff2") format("woff2"); }
@@ -41,8 +41,8 @@
       .p-l2 { font-size: 76px; font-weight: 600; letter-spacing: -0.02em; margin-top: 6px; }
       .p-g { color: #4e8a0e; }
     </style>
-    <div id="p-bg" class="clip" data-start="0" data-duration="9.6" data-track-index="0"></div>
-    <div id="p-layer" class="clip" data-start="0" data-duration="9.6" data-track-index="1" data-layout-allow-overflow>
+    <div id="p-bg" class="clip" data-start="0" data-duration="7.2" data-track-index="0"></div>
+    <div id="p-layer" class="clip" data-start="0" data-duration="7.2" data-track-index="1" data-layout-allow-overflow>
       <div class="p-txt" id="p-t1"><div class="p-l1"><span class="wd ">Now</span> <span class="wd ">imagine</span></div><div class="p-l2"><span class="wd p-g">Impact</span> <span class="wd ">does</span> <span class="wd ">exist.</span></div></div>
       <div class="p-txt" id="p-t2"><div class="p-l1"><span class="wd ">It's</span> <span class="wd ">real.</span></div><div class="p-l2"><span class="wd ">And</span> <span class="wd ">it</span> <span class="wd ">can</span> <span class="wd ">be</span> <span class="wd p-g">yours.</span></div></div>
       <div class="p-txt" id="p-t3"><div class="p-l1"><span class="wd ">Visit</span> <span class="wd ">our</span> <span class="wd ">shop</span></div><div class="p-l2"><span class="wd ">and</span> <span class="wd ">order</span> <span class="wd ">it</span> <span class="wd p-g">now.</span></div></div>
@@ -80,27 +80,27 @@
 
         tl.fromTo("#p-phone", { scale: 1.75 }, { scale: 1, duration: 0.8, ease: "power3.inOut" }, 0);
         // the feed version: the bullet is already there, a hair from the clipper
-        tl.fromTo("#p-t1", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 0.4);
-        words("#p-t1 .p-l1 .wd", [0.4, 0.77]);
-        words("#p-t1 .p-l2 .wd", [1.28, 1.81, 2.04]);
-        tl.to("#p-t1", { opacity: 0, duration: 0.2 }, 3.15);
-        tl.fromTo("#p-t2", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 3.4);
-        words("#p-t2 .p-l1 .wd", [3.4, 3.62]);
-        words("#p-t2 .p-l2 .wd", [4.1, 4.2, 4.29, 4.47, 4.66]);
+        tl.fromTo("#p-t1", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 0.3);
+        words("#p-t1 .p-l1 .wd", [0.3, 0.49]);
+        words("#p-t1 .p-l2 .wd", [0.89, 1.22, 1.41]);
+        tl.to("#p-t1", { opacity: 0, duration: 0.2 }, 2.25);
+        tl.fromTo("#p-t2", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 2.5);
+        words("#p-t2 .p-l1 .wd", [2.5, 2.65]);
+        words("#p-t2 .p-l2 .wd", [3.04, 3.17, 3.23, 3.35, 3.42]);
         // tap -> the shop opens on the clipper's product page
-        tl.fromTo("#p-tap", { opacity: 0, scale: 0.4 }, { keyframes: [ { opacity: 1, scale: 1, duration: 0.18 }, { opacity: 0, scale: 1.4, duration: 0.3 } ] }, 5.85);
-        tl.fromTo("#p-sitewrap", { yPercent: 100 }, { yPercent: 0, duration: 0.55, ease: "power3.out" }, 6.05);
-        tl.fromTo("#p-site", { y: 0 }, { y: -130, duration: 3.0, ease: "power1.inOut" }, 6.45);
-        tl.fromTo("#p-url", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 6.35);
-        tl.fromTo("#p-cart", { opacity: 0, y: 30, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: "back.out(2)" }, 7.55);
-        tl.fromTo("#p-cart", { scale: 1 }, { keyframes: [ { scale: 0.94, duration: 0.08 }, { scale: 1, duration: 0.2 } ], immediateRender: false }, 8.26);
-        tl.to("#p-t2", { opacity: 0, duration: 0.2 }, 6.15);
-        tl.fromTo("#p-t3", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 6.4);
-        words("#p-t3 .p-l1 .wd", [6.4, 6.77, 6.91]);
-        words("#p-t3 .p-l2 .wd", [7.43, 7.55, 7.86, 7.96]);
-        tl.fromTo("#p-phone", { y: 0 }, { y: -16, duration: 3.0, ease: "sine.inOut" }, 6.45);
+        tl.fromTo("#p-tap", { opacity: 0, scale: 0.4 }, { keyframes: [ { opacity: 1, scale: 1, duration: 0.18 }, { opacity: 0, scale: 1.4, duration: 0.3 } ] }, 4.05);
+        tl.fromTo("#p-sitewrap", { yPercent: 100 }, { yPercent: 0, duration: 0.55, ease: "power3.out" }, 4.25);
+        tl.fromTo("#p-site", { y: 0 }, { y: -130, duration: 3.0, ease: "power1.inOut" }, 4.65);
+        tl.fromTo("#p-url", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 4.55);
+        tl.fromTo("#p-cart", { opacity: 0, y: 30, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: "back.out(2)" }, 5.4);
+        tl.fromTo("#p-cart", { scale: 1 }, { keyframes: [ { scale: 0.94, duration: 0.08 }, { scale: 1, duration: 0.2 } ], immediateRender: false }, 6.02);
+        tl.to("#p-t2", { opacity: 0, duration: 0.2 }, 4.35);
+        tl.fromTo("#p-t3", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 4.6);
+        words("#p-t3 .p-l1 .wd", [4.6, 4.81, 4.9]);
+        words("#p-t3 .p-l2 .wd", [5.28, 5.4, 5.65, 5.72]);
+        tl.fromTo("#p-phone", { y: 0 }, { y: -16, duration: 3.0, ease: "sine.inOut" }, 4.65);
 
-        tl.to({}, { duration: 9.6 }, 0);
+        tl.to({}, { duration: 7.2 }, 0);
         window.__timelines["phone"] = tl;
       })();
     </script>
