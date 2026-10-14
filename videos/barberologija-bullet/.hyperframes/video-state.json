@@ -289,5 +289,16 @@
       ]
     },
     "unversioned": []
-  }
+  },
+  "renders": {
+    "latest": {
+      "id": "1b532e93-5b8d-4375-92b6-5f89840e8455",
+      "completedAt": 1791976764837,
+      "output": "/home/user/Claude/videos/barberologija-bullet/renders/barberologija-bullet-master.mp4",
+      "status": "completed",
+      "revision": null
+    },
+    "retainedRevisions": []
+  },
+  "pendingArtifactCleanup": []
 }
