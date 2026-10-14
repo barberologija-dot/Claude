@@ -76,7 +76,7 @@ def ws(text, cls=""):
 import json
 VO = {int(k): v for k, v in json.load(open("build/vo_words.json")).items()}
 # VO placement (global seconds) — line index -> start
-VO_AT = {1: 7.75, 2: 11.45, 3: 13.4, 4: 15.75, 5: 17.7, 6: 19.9}
+VO_AT = {1: 7.75, 2: 11.45, 3: 13.4, 4: 15.75, 5: 17.85, 6: 19.9}
 WIRE_IN, WIRE_OUT = 11.35, 13.3
 T_MAIN, T_PHONE, T_END = 15.6, 6.8, 2.6
 TOTAL = round(T_MAIN + T_PHONE + T_END, 2)
@@ -169,9 +169,9 @@ body = f"""    <div id="m-bg" class="clip" data-start="0" data-duration="{T_MAIN
           <div id="m-bul">{BULLET.format(w=BW, h=BH, id="brass")}<div id="m-sheen"></div></div>
         </div>
         <div id="m-rigw">{BULLET_WIRE.format(w=BW, h=BH)}</div>
-        <div class="m-lab mono" id="m-lab1" style="left:120px;top:{CY - 120}px">clipper.obj &nbsp;|&nbsp; 0 polygons wasted</div>
-        <div class="m-lab mono" id="m-lab2" style="left:{CX - 330}px;top:{HIT_Y - 62}px">projectile.obj</div>
-        <div class="m-lab mono" id="m-lab3" style="left:120px;top:{CY - 84}px">velocity = 0.00001x &nbsp;|&nbsp; impact = never</div>
+        <div class="m-lab mono" id="m-lab1" style="left:120px;top:{CY - 120}px">impact.obj &nbsp;|&nbsp; exists = true</div>
+        <div class="m-lab mono" id="m-lab2" style="left:{CX - 440}px;top:{HIT_Y - 62}px">projectile.obj &nbsp;|&nbsp; exists = false</div>
+        <div class="m-lab mono" id="m-lab3" style="left:120px;top:{CY - 84}px">velocity = 0.00001x &nbsp;|&nbsp; hit = never</div>
       </div>
     </div>
     <div id="m-ui" class="clip" data-start="0" data-duration="{T_MAIN}" data-track-index="3">
@@ -248,8 +248,8 @@ SB = 44                              # status bar
 SITE_H = round(SW * 2210 / 1206)     # screenshot height at screen width
 BB = SH - SB - SITE_H                # bottom browser bar height
 B = T_MAIN
-v4 = [wt(4, i, B) for i in range(5)]   # now imagine impact does exist
-v5 = [wt(5, i, B) for i in range(7)]   # it's real and it can be yours
+v4 = [wt(4, i, B) for i in range(6)]   # the bullet isn't real impact is
+v5 = [wt(5, i, B) for i in range(5)]   # and it can be yours
 v6 = [wt(6, i, B) for i in range(7)]   # visit our shop and order it now
 HOME_IN = round(v5[0] - 0.25, 2)
 SEARCH_TAP = round(HOME_IN + 0.45, 2)
@@ -320,8 +320,8 @@ MAG = '<svg width="26" height="26" viewBox="0 0 26 26"><g fill="none" stroke="#5
 chars = "".join(f'<span class="p-ch" id="p-ch{i}">{c}</span>' for i, c in enumerate(QUERY))
 body = f"""    <div id="p-bg" class="clip" data-start="0" data-duration="{T_PHONE}" data-track-index="0"></div>
     <div id="p-layer" class="clip" data-start="0" data-duration="{T_PHONE}" data-track-index="1" data-layout-allow-overflow>
-      <div class="p-txt" id="p-t1"><div class="p-l1">{ws("Now imagine")}</div><div class="p-l2"><span class="wd p-g">Impact</span> {ws("does exist.")}</div></div>
-      <div class="p-txt" id="p-t2"><div class="p-l1">{ws("It's real.")}</div><div class="p-l2">{ws("And it can be")} <span class="wd p-g">yours.</span></div></div>
+      <div class="p-txt" id="p-t1"><div class="p-l1">{ws("The bullet isn't real.")}</div><div class="p-l2"><span class="wd p-g">Impact</span> {ws("is.")}</div></div>
+      <div class="p-txt" id="p-t2"><div class="p-l1">{ws("And it can be")}</div><div class="p-l2"><span class="wd p-g">yours.</span></div></div>
       <div class="p-txt" id="p-t3"><div class="p-l1">{ws("Visit our shop")}</div><div class="p-l2">{ws("and order it")} <span class="wd p-g">now.</span></div></div>
       <div id="p-phone" data-layout-allow-overflow><div id="p-screen">
         <div id="p-feed">
@@ -361,20 +361,21 @@ typing = "\n".join(f'        tl.fromTo("#p-ch{i}", {{ opacity: 0 }}, {{ opacity:
 js = f"""
         tl.fromTo("#p-phone", {{ scale: 1.75 }}, {{ scale: 1, duration: 0.7, ease: "power3.inOut" }}, 0);
         tl.fromTo("#p-t1", {{ opacity: 0 }}, {{ opacity: 1, duration: 0.01 }}, {v4[0]});
-        words("#p-t1 .p-l1 .wd", [{v4[0]}, {v4[1]}]);
-        words("#p-t1 .p-l2 .wd", [{v4[2]}, {v4[3]}, {v4[4]}]);
+        words("#p-t1 .p-l1 .wd", [{v4[0]}, {v4[1]}, {v4[2]}, {v4[3]}]);
+        words("#p-t1 .p-l2 .wd", [{v4[4]}, {v4[5]}]);
         // the shop opens: homepage
         tl.fromTo("#p-browser", {{ yPercent: 100 }}, {{ yPercent: 0, duration: 0.45, ease: "power3.out" }}, {HOME_IN});
         tl.to("#p-feed", {{ opacity: 0, duration: 0.05 }}, {HOME_IN + 0.45:.2f});
         tl.to("#p-t1", {{ opacity: 0, duration: 0.15 }}, {v5[0] - 0.18:.2f});
         tl.fromTo("#p-t2", {{ opacity: 0 }}, {{ opacity: 1, duration: 0.01 }}, {v5[0]});
-        words("#p-t2 .p-l1 .wd", [{v5[0]}, {v5[1]}]);
-        words("#p-t2 .p-l2 .wd", [{v5[2]}, {v5[3]}, {v5[4]}, {v5[5]}, {v5[6]}]);
+        words("#p-t2 .p-l1 .wd", [{v5[0]}, {v5[1]}, {v5[2]}, {v5[3]}]);
+        words("#p-t2 .p-l2 .wd", [{v5[4]}]);
         // search: tap the magnifier, type "impact", result appears
 {tap("#p-tap1", SEARCH_TAP)}
         tl.fromTo("#p-search", {{ yPercent: -110 }}, {{ yPercent: 0, duration: 0.28, ease: "power3.out" }}, {SEARCH_TAP + 0.1:.2f});
 {typing}
-        tl.fromTo("#p-caret", {{ opacity: 1 }}, {{ keyframes: [ {{ opacity: 0, duration: 0.2 }}, {{ opacity: 1, duration: 0.2 }}, {{ opacity: 0, duration: 0.2 }}, {{ opacity: 1, duration: 0.2 }}, {{ opacity: 0, duration: 0.2 }}, {{ opacity: 1, duration: 0.2 }} ] }}, {RESULT_AT});
+        tl.fromTo("#p-caret", {{ opacity: 0 }}, {{ opacity: 0, duration: 0.01 }}, 0);
+        tl.to("#p-caret", {{ keyframes: [ {{ opacity: 1, duration: 0.01 }}, {{ opacity: 1, duration: 0.2 }}, {{ opacity: 0, duration: 0.2 }}, {{ opacity: 1, duration: 0.2 }}, {{ opacity: 0, duration: 0.2 }}, {{ opacity: 1, duration: 0.2 }}, {{ opacity: 0, duration: 0.2 }}, {{ opacity: 1, duration: 0.2 }} ] }}, {RESULT_AT});
         tl.fromTo("#p-result", {{ opacity: 0, y: 14 }}, {{ opacity: 1, y: 0, duration: 0.25, ease: "power2.out" }}, {RESULT_AT});
         // open the product
 {tap("#p-tap2", RESULT_TAP)}
