@@ -1,5 +1,5 @@
 <template>
-  <div id="root" data-composition-id="main-shot" data-start="0" data-duration="19.2" data-width="1080" data-height="1920">
+  <div id="root" data-composition-id="main-shot" data-start="0" data-duration="15.6" data-width="1080" data-height="1920">
     <style>
       @font-face { font-family: "Inter"; font-weight: 300; src: url("assets/fonts/inter-latin-300-normal.woff2") format("woff2"); }
       @font-face { font-family: "Inter"; font-weight: 400; src: url("assets/fonts/inter-latin-400-normal.woff2") format("woff2"); }
@@ -57,9 +57,9 @@
       .m-b { font-weight: 700; }
       .m-acc { font-weight: 700; color: #4e8a0e; }
     </style>
-    <div id="m-bg" class="clip" data-start="0" data-duration="19.2" data-track-index="0"></div>
-    <div id="m-grid" class="clip" data-start="0" data-duration="19.2" data-track-index="1"></div>
-    <div id="m-world" class="clip" data-start="0" data-duration="19.2" data-track-index="2" data-layout-allow-overflow>
+    <div id="m-bg" class="clip" data-start="0" data-duration="15.6" data-track-index="0"></div>
+    <div id="m-grid" class="clip" data-start="0" data-duration="15.6" data-track-index="1"></div>
+    <div id="m-world" class="clip" data-start="0" data-duration="15.6" data-track-index="2" data-layout-allow-overflow>
       <div id="m-stage" data-layout-allow-overflow>
         <div id="m-floor"></div>
         <div id="m-shadow"></div>
@@ -99,7 +99,7 @@
         <div class="m-lab mono" id="m-lab3" style="left:120px;top:386px">velocity = 0.00001x &nbsp;|&nbsp; impact = never</div>
       </div>
     </div>
-    <div id="m-ui" class="clip" data-start="0" data-duration="19.2" data-track-index="3">
+    <div id="m-ui" class="clip" data-start="0" data-duration="15.6" data-track-index="3">
       <div id="m-hud"><div class="m-corner" style="left:40px;top:150px;border-left-width:2px;border-top-width:2px"></div><div class="m-corner" style="right:40px;top:150px;border-right-width:2px;border-top-width:2px"></div><div class="m-corner" style="left:40px;bottom:140px;border-left-width:2px;border-bottom-width:2px"></div><div class="m-corner" style="right:40px;bottom:140px;border-right-width:2px;border-bottom-width:2px"></div>
         <div id="m-rec" class="mono"><i></i>REC &nbsp;00:00:00:<span id="m-tc">06</span></div>
         <div id="m-fps" class="mono">100,000 FPS</div>
@@ -133,7 +133,7 @@
         tl.to("#m-count", { opacity: 0, duration: 0.2 }, 7.7);
         tl.fromTo("#m-tc", { opacity: 1 }, { opacity: 1, duration: 0.01, onComplete: () => { document.getElementById("m-tc").textContent = "07"; },
           onReverseComplete: () => { document.getElementById("m-tc").textContent = "06"; } }, 9.0);
-        tl.fromTo("#m-rec i", { opacity: 1 }, { keyframes: [{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 }] }, 0);
+        tl.fromTo("#m-rec i", { opacity: 1 }, { keyframes: [{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 },{ opacity: 1, duration: 0.5 },{ opacity: 0.15, duration: 0.5 }] }, 0);
 
         // ---- shot 1: the bullet crawls all the way in (decelerating), camera pushes to the contact point ----
         tl.fromTo("#m-rig", { x: -80 }, { x: 423, duration: 7.6, ease: "power1.out" }, 0);
@@ -142,32 +142,32 @@
         tl.fromTo("#m-glint", { opacity: 0 }, { opacity: 0.8, duration: 4.0, ease: "power2.in" }, 3.6);
         // ---- cut to wide: tip a breath away, still creeping, never touching ----
         tl.to("#m-stage", { scale: 1.08, duration: 0.01 }, 7.6);
-        tl.to("#m-stage", { scale: 1.18, duration: 11.59, ease: "none" }, 7.61);
-        tl.to("#m-rig", { x: 434, duration: 11.60, ease: "power2.out" }, 7.6);
+        tl.to("#m-stage", { scale: 1.18, duration: 7.99, ease: "none" }, 7.61);
+        tl.to("#m-rig", { x: 434, duration: 8.00, ease: "power2.out" }, 7.6);
         // text 1 on the VO
-        tl.fromTo("#m-t1", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 7.9);
-        words("#m-t1 .m-l1 .wd", [7.9, 7.98, 8.2, 8.5, 8.54]);
-        words("#m-t1 .m-l2 .wd", [8.85, 9.19, 9.48, 9.97, 10.12, 10.49]);
-        tl.to("#m-t1", { opacity: 0, duration: 0.2 }, 12.4);
+        tl.fromTo("#m-t1", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 7.75);
+        words("#m-t1 .m-l1 .wd", [7.75, 7.83, 8.05, 8.35, 8.39]);
+        words("#m-t1 .m-l2 .wd", [8.7, 9.04, 9.33, 9.82, 9.97, 10.34]);
+        tl.to("#m-t1", { opacity: 0, duration: 0.2 }, 11.20);
         // ---- wireframe ----
-        tl.to("#m-grid", { opacity: 1, duration: 0.08 }, 12.6);
-        tl.to(["#m-clip", "#m-rig", "#m-shadow", "#m-floor", "#m-glint"], { opacity: 0, duration: 0.08 }, 12.6);
-        tl.to(["#m-wire", "#m-mesh", "#m-rigw"], { opacity: 1, duration: 0.08 }, 12.6);
-        tl.fromTo("#m-rigw", { x: 428 }, { x: 431, duration: 3.0, ease: "none" }, 12.6);
-        tl.to("#m-hud", { opacity: 0.35, duration: 0.1 }, 12.6);
-        ["#m-lab1", "#m-lab2", "#m-lab3"].forEach((s, i) => tl.fromTo(s, { opacity: 0 }, { opacity: 1, duration: 0.25 }, 12.75 + i * 0.18));
-        tl.fromTo("#m-t2", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 12.8);
-        words("#m-t2 .m-l1 .wd", [12.8, 12.86]);
-        words("#m-t2 .m-l2 .wd", [13.17, 13.29, 13.56, 13.75]);
-        tl.to("#m-grid", { keyframes: [ { opacity: 0.2, duration: 0.04 }, { opacity: 1, duration: 0.04 }, { opacity: 0, duration: 0.05 } ] }, 15.5);
-        tl.to(["#m-wire", "#m-mesh", "#m-rigw", "#m-lab1", "#m-lab2", "#m-lab3", "#m-t2"], { opacity: 0, duration: 0.05 }, 15.6);
-        tl.to(["#m-clip", "#m-rig", "#m-shadow", "#m-floor", "#m-glint"], { opacity: 1, duration: 0.05 }, 15.6);
-        tl.to("#m-hud", { opacity: 1, duration: 0.1 }, 15.6);
-        tl.fromTo("#m-t3", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 15.8);
-        words("#m-t3 .m-l1 .wd", [15.8, 15.89, 15.98, 16.21]);
-        words("#m-t3 .m-l2 .wd", [16.48, 16.81, 16.97, 17.04, 17.12]);
+        tl.to("#m-grid", { opacity: 1, duration: 0.08 }, 11.35);
+        tl.to(["#m-clip", "#m-rig", "#m-shadow", "#m-floor", "#m-glint"], { opacity: 0, duration: 0.08 }, 11.35);
+        tl.to(["#m-wire", "#m-mesh", "#m-rigw"], { opacity: 1, duration: 0.08 }, 11.35);
+        tl.fromTo("#m-rigw", { x: 428 }, { x: 431, duration: 1.95, ease: "none" }, 11.35);
+        tl.to("#m-hud", { opacity: 0.35, duration: 0.1 }, 11.35);
+        ["#m-lab1", "#m-lab2", "#m-lab3"].forEach((s, i) => tl.fromTo(s, { opacity: 0 }, { opacity: 1, duration: 0.25 }, 11.47 + i * 0.15));
+        tl.fromTo("#m-t2", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 11.45);
+        words("#m-t2 .m-l1 .wd", [11.45, 11.51]);
+        words("#m-t2 .m-l2 .wd", [11.82, 11.94, 12.21, 12.4]);
+        tl.to("#m-grid", { keyframes: [ { opacity: 0.2, duration: 0.04 }, { opacity: 1, duration: 0.04 }, { opacity: 0, duration: 0.05 } ] }, 13.20);
+        tl.to(["#m-wire", "#m-mesh", "#m-rigw", "#m-lab1", "#m-lab2", "#m-lab3", "#m-t2"], { opacity: 0, duration: 0.05 }, 13.3);
+        tl.to(["#m-clip", "#m-rig", "#m-shadow", "#m-floor", "#m-glint"], { opacity: 1, duration: 0.05 }, 13.3);
+        tl.to("#m-hud", { opacity: 1, duration: 0.1 }, 13.3);
+        tl.fromTo("#m-t3", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 13.4);
+        words("#m-t3 .m-l1 .wd", [13.4, 13.49, 13.58, 13.81]);
+        words("#m-t3 .m-l2 .wd", [14.08, 14.41, 14.57, 14.64, 14.72]);
 
-        tl.to({}, { duration: 19.2 }, 0);
+        tl.to({}, { duration: 15.6 }, 0);
         window.__timelines["main-shot"] = tl;
       })();
     </script>

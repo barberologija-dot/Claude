@@ -76,8 +76,9 @@ def ws(text, cls=""):
 import json
 VO = {int(k): v for k, v in json.load(open("build/vo_words.json")).items()}
 # VO placement (global seconds) — line index -> start
-VO_AT = {1: 7.9, 2: 12.8, 3: 15.8, 4: 19.5, 5: 21.7, 6: 23.8}
-T_MAIN, T_PHONE, T_END = 19.2, 7.2, 2.6
+VO_AT = {1: 7.75, 2: 11.45, 3: 13.4, 4: 15.75, 5: 17.7, 6: 19.9}
+WIRE_IN, WIRE_OUT = 11.35, 13.3
+T_MAIN, T_PHONE, T_END = 15.6, 6.8, 2.6
 TOTAL = round(T_MAIN + T_PHONE + T_END, 2)
 
 
@@ -218,35 +219,50 @@ js = f"""
         tl.fromTo("#m-t1", {{ opacity: 0 }}, {{ opacity: 1, duration: 0.01 }}, {v1[0]});
         words("#m-t1 .m-l1 .wd", {v1[0:5]});
         words("#m-t1 .m-l2 .wd", [{v1[5]}, {v1[6]}, {v1[7]}, {v1[8]}, {v1[9]}, {v1[10]}]);
-        tl.to("#m-t1", {{ opacity: 0, duration: 0.2 }}, 12.4);
+        tl.to("#m-t1", {{ opacity: 0, duration: 0.2 }}, {WIRE_IN - 0.15:.2f});
         // ---- wireframe ----
-        tl.to("#m-grid", {{ opacity: 1, duration: 0.08 }}, 12.6);
-        tl.to(["#m-clip", "#m-rig", "#m-shadow", "#m-floor", "#m-glint"], {{ opacity: 0, duration: 0.08 }}, 12.6);
-        tl.to(["#m-wire", "#m-mesh", "#m-rigw"], {{ opacity: 1, duration: 0.08 }}, 12.6);
-        tl.fromTo("#m-rigw", {{ x: {X_END2 - 6} }}, {{ x: {X_END2 - 3}, duration: 3.0, ease: "none" }}, 12.6);
-        tl.to("#m-hud", {{ opacity: 0.35, duration: 0.1 }}, 12.6);
-        ["#m-lab1", "#m-lab2", "#m-lab3"].forEach((s, i) => tl.fromTo(s, {{ opacity: 0 }}, {{ opacity: 1, duration: 0.25 }}, 12.75 + i * 0.18));
+        tl.to("#m-grid", {{ opacity: 1, duration: 0.08 }}, {WIRE_IN});
+        tl.to(["#m-clip", "#m-rig", "#m-shadow", "#m-floor", "#m-glint"], {{ opacity: 0, duration: 0.08 }}, {WIRE_IN});
+        tl.to(["#m-wire", "#m-mesh", "#m-rigw"], {{ opacity: 1, duration: 0.08 }}, {WIRE_IN});
+        tl.fromTo("#m-rigw", {{ x: {X_END2 - 6} }}, {{ x: {X_END2 - 3}, duration: {WIRE_OUT - WIRE_IN:.2f}, ease: "none" }}, {WIRE_IN});
+        tl.to("#m-hud", {{ opacity: 0.35, duration: 0.1 }}, {WIRE_IN});
+        ["#m-lab1", "#m-lab2", "#m-lab3"].forEach((s, i) => tl.fromTo(s, {{ opacity: 0 }}, {{ opacity: 1, duration: 0.25 }}, {WIRE_IN + 0.12:.2f} + i * 0.15));
         tl.fromTo("#m-t2", {{ opacity: 0 }}, {{ opacity: 1, duration: 0.01 }}, {v2[0]});
         words("#m-t2 .m-l1 .wd", [{v2[0]}, {v2[1]}]);
         words("#m-t2 .m-l2 .wd", [{v2[2]}, {v2[3]}, {v2[4]}, {v2[5]}]);
-        tl.to("#m-grid", {{ keyframes: [ {{ opacity: 0.2, duration: 0.04 }}, {{ opacity: 1, duration: 0.04 }}, {{ opacity: 0, duration: 0.05 }} ] }}, 15.5);
-        tl.to(["#m-wire", "#m-mesh", "#m-rigw", "#m-lab1", "#m-lab2", "#m-lab3", "#m-t2"], {{ opacity: 0, duration: 0.05 }}, 15.6);
-        tl.to(["#m-clip", "#m-rig", "#m-shadow", "#m-floor", "#m-glint"], {{ opacity: 1, duration: 0.05 }}, 15.6);
-        tl.to("#m-hud", {{ opacity: 1, duration: 0.1 }}, 15.6);
+        tl.to("#m-grid", {{ keyframes: [ {{ opacity: 0.2, duration: 0.04 }}, {{ opacity: 1, duration: 0.04 }}, {{ opacity: 0, duration: 0.05 }} ] }}, {WIRE_OUT - 0.1:.2f});
+        tl.to(["#m-wire", "#m-mesh", "#m-rigw", "#m-lab1", "#m-lab2", "#m-lab3", "#m-t2"], {{ opacity: 0, duration: 0.05 }}, {WIRE_OUT});
+        tl.to(["#m-clip", "#m-rig", "#m-shadow", "#m-floor", "#m-glint"], {{ opacity: 1, duration: 0.05 }}, {WIRE_OUT});
+        tl.to("#m-hud", {{ opacity: 1, duration: 0.1 }}, {WIRE_OUT});
         tl.fromTo("#m-t3", {{ opacity: 0 }}, {{ opacity: 1, duration: 0.01 }}, {v3[0]});
         words("#m-t3 .m-l1 .wd", [{v3[0]}, {v3[1]}, {v3[2]}, {v3[3]}]);
         words("#m-t3 .m-l2 .wd", [{v3[4]}, {v3[5]}, {v3[6]}, {v3[7]}, {v3[8]}]);
 """
 main_html = wrap("main-shot", T_MAIN, css, body, js)
 
-# ======================= PHONE =======================
+# ======================= PHONE (feed -> barberologija.si home -> search "impact" -> product) =======================
 PW, PH = 600, 1230
 PX, PY = (W - PW) // 2, 600
+SW, SH = PW - 28, PH - 28            # inner screen
+SB = 44                              # status bar
+SITE_H = round(SW * 2210 / 1206)     # screenshot height at screen width
+BB = SH - SB - SITE_H                # bottom browser bar height
 B = T_MAIN
 v4 = [wt(4, i, B) for i in range(5)]   # now imagine impact does exist
 v5 = [wt(5, i, B) for i in range(7)]   # it's real and it can be yours
 v6 = [wt(6, i, B) for i in range(7)]   # visit our shop and order it now
-TAP = round(v6[0] - 0.55, 2)
+HOME_IN = round(v5[0] - 0.25, 2)
+SEARCH_TAP = round(HOME_IN + 0.45, 2)
+TYPE_AT = round(SEARCH_TAP + 0.4, 2)
+QUERY = "impact"
+RESULT_AT = round(TYPE_AT + len(QUERY) * 0.09 + 0.12, 2)
+RESULT_TAP = round(v6[0] - 0.3, 2)
+PROD_IN = round(RESULT_TAP + 0.15, 2)
+ORDER_TAP = round(v6[6] + 0.05, 2)
+TAP = RESULT_TAP
+k = SW / 1206                        # screenshot px -> screen px
+SEARCH_X, SEARCH_Y = round(197 * k), SB + round(103 * k)
+
 css = f"""
       #p-bg {{ background: radial-gradient(ellipse 80% 55% at 50% 45%, #f7f6f2 0%, {CREAM} 60%, #e2dfd6 100%); }}
       #p-phone {{ position: absolute; left: {PX}px; top: {PY}px; width: {PW}px; height: {PH}px; border-radius: 74px; background: #111;
@@ -257,25 +273,51 @@ css = f"""
       #p-feed .p-time {{ position: absolute; left: 44px; top: 22px; font-size: 18px; font-weight: 600; }}
       #p-fclip {{ position: absolute; left: 290px; top: 360px; height: 340px; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.22)); }}
       #p-fbul {{ position: absolute; left: {290 + round(340 * 485 / 1226 * 0.103) - 2 - round(86 * 216 / 220)}px; top: {360 + int(340 * 0.24) - 12}px; width: 86px; height: 24px; }}
-      #p-fwake {{ position: absolute; right: 80px; top: 3px; width: 240px; height: 18px; border-radius: 9px;
+      #p-fwake {{ position: absolute; right: 80px; top: 6px; width: 240px; height: 12px; border-radius: 6px;
         background: linear-gradient(90deg, rgba(150,148,140,0), rgba(150,148,140,0.22)); filter: blur(4px); }}
       .p-ic {{ position: absolute; right: 30px; width: 30px; height: 30px; border: 2.5px solid {INK}; border-radius: 50%; }}
       #p-handle {{ position: absolute; left: 34px; bottom: 120px; font-size: 22px; font-weight: 600; display: flex; align-items: center; gap: 12px; }}
       #p-handle i {{ width: 36px; height: 36px; border-radius: 50%; background: #0d0d0d; display: inline-block; box-shadow: inset 0 0 0 3px {NEON}; }}
       #p-bar {{ position: absolute; left: 34px; right: 34px; bottom: 96px; height: 3px; background: {INK}; border-radius: 2px; }}
-      #p-sitewrap {{ position: absolute; inset: 0; overflow: hidden; background: #ffffff; }}
-      #p-site {{ position: absolute; left: 0; top: 0; width: 100%; }}
-      #p-site img {{ display: block; width: 100%; }}
-      #p-url {{ position: absolute; left: 50%; bottom: 26px; transform: translateX(-50%); padding: 12px 28px; border-radius: 40px; background: rgba(255,255,255,0.94);
-        font-size: 24px; font-weight: 600; box-shadow: 0 6px 18px rgba(0,0,0,0.18); white-space: nowrap; }}
-      #p-cart {{ position: absolute; left: 50%; bottom: 96px; transform: translateX(-50%); padding: 18px 44px; border-radius: 14px; background: {INK}; color: #fff;
-        font-size: 26px; font-weight: 700; letter-spacing: 0.04em; white-space: nowrap; box-shadow: 0 10px 22px rgba(0,0,0,0.25); }}
-      #p-tap {{ position: absolute; left: 255px; top: 470px; width: 90px; height: 90px; border-radius: 50%; border: 4px solid rgba(78,138,14,0.9); opacity: 0; }}
+      /* browser */
+      #p-browser {{ position: absolute; inset: 0; background: #ffffff; overflow: hidden; }}
+      #p-sb {{ position: absolute; left: 0; right: 0; top: 0; height: {SB}px; z-index: 5; background: #1d1d1b; color: #fff; font-size: 17px; font-weight: 600; }}
+      #p-sb span {{ position: absolute; left: 46px; top: 13px; color: #ffffff; }}
+      .p-shot {{ position: absolute; left: 0; top: {SB}px; width: {SW}px; height: {SITE_H}px; display: block; }}
+      #p-prod {{ opacity: 0; }}
+      #p-bbar {{ position: absolute; left: 0; right: 0; bottom: 0; height: {BB}px; background: #f2f2f0; border-top: 1px solid #dcdcd8; }}
+      #p-url {{ position: absolute; left: 50%; top: 18px; transform: translateX(-50%); padding: 12px 34px; border-radius: 30px; background: #ffffff;
+        font-size: 22px; font-weight: 600; box-shadow: 0 3px 10px rgba(0,0,0,0.10); white-space: nowrap; }}
+      #p-url i {{ display: inline-block; width: 10px; height: 13px; border: 2px solid #555; border-radius: 3px; margin-right: 10px; vertical-align: -1px; }}
+      /* search overlay */
+      #p-search {{ position: absolute; left: 0; right: 0; top: {SB}px; height: 330px; background: #ffffff; box-shadow: 0 16px 30px rgba(0,0,0,0.18); }}
+      #p-field {{ position: absolute; left: 22px; right: 22px; top: 22px; height: 64px; border-radius: 14px; background: #f0f0ee; display: flex; align-items: center;
+        padding-left: 18px; font-size: 26px; font-weight: 500; color: {INK}; }}
+      #p-field svg {{ margin-right: 12px; flex: 0 0 auto; }}
+      .p-ch {{ opacity: 0; }}
+      #p-caret {{ display: inline-block; width: 2px; height: 30px; background: {ACC}; margin-left: 2px; }}
+      #p-result {{ position: absolute; left: 22px; right: 22px; top: 110px; height: 190px; display: flex; align-items: center; gap: 20px; border-bottom: 1px solid #ececea; opacity: 0; }}
+      #p-result img {{ height: 170px; flex: 0 0 auto; }}
+      #p-rname {{ font-size: 24px; font-weight: 800; line-height: 1.2; color: {INK}; }}
+      #p-rsub {{ font-size: 18px; color: {SOFT}; margin-top: 6px; }}
+      #p-rprice {{ font-size: 24px; font-weight: 700; color: {INK}; margin-top: 10px; }}
+      #p-rprice s {{ color: #9a9a95; font-weight: 500; font-size: 19px; margin-left: 8px; }}
+      /* sticky buy bar on the product page */
+      #p-sticky {{ position: absolute; left: 0; right: 0; top: {SB + SITE_H - 40}px; height: {BB + 40}px; background: #ffffff; z-index: 3; border-top: 1px solid #e6e6e2;
+        box-shadow: 0 -10px 24px rgba(0,0,0,0.08); opacity: 0; }}
+      #p-price {{ position: absolute; left: 26px; top: 26px; font-size: 32px; font-weight: 800; color: {INK}; }}
+      #p-price s {{ display: block; font-size: 20px; font-weight: 500; color: #9a9a95; margin-top: 2px; }}
+      #p-cart {{ position: absolute; right: 24px; top: 34px; padding: 22px 34px; border-radius: 12px; background: {INK}; color: #fff;
+        font-size: 24px; font-weight: 800; letter-spacing: 0.05em; white-space: nowrap; }}
+      .p-tap {{ position: absolute; z-index: 6; width: 84px; height: 84px; margin: -42px 0 0 -42px; border-radius: 50%; border: 4px solid rgba(78,138,14,0.95);
+        background: rgba(139,209,36,0.18); opacity: 0; }}
       .p-txt {{ position: absolute; left: 40px; right: 40px; top: 250px; text-align: center; opacity: 0; }}
       .p-l1 {{ font-size: 46px; font-weight: 400; color: {SOFT}; }}
       .p-l2 {{ font-size: 76px; font-weight: 600; letter-spacing: -0.02em; margin-top: 6px; }}
       .p-g {{ color: {ACC}; }}
 """
+MAG = '<svg width="26" height="26" viewBox="0 0 26 26"><g fill="none" stroke="#555" stroke-width="3" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M17 17 L24 24"/></g></svg>'
+chars = "".join(f'<span class="p-ch" id="p-ch{i}">{c}</span>' for i, c in enumerate(QUERY))
 body = f"""    <div id="p-bg" class="clip" data-start="0" data-duration="{T_PHONE}" data-track-index="0"></div>
     <div id="p-layer" class="clip" data-start="0" data-duration="{T_PHONE}" data-track-index="1" data-layout-allow-overflow>
       <div class="p-txt" id="p-t1"><div class="p-l1">{ws("Now imagine")}</div><div class="p-l2"><span class="wd p-g">Impact</span> {ws("does exist.")}</div></div>
@@ -289,35 +331,64 @@ body = f"""    <div id="p-bg" class="clip" data-start="0" data-duration="{T_PHON
           <div class="p-ic" style="top:760px"></div><div class="p-ic" style="top:820px"></div><div class="p-ic" style="top:880px"></div>
           <div id="p-handle"><i></i>barberologija</div>
           <div id="p-bar"></div>
-          <div id="p-tap"></div>
         </div>
-        <div id="p-sitewrap"><div id="p-site"><img src="assets/site-impact.png" alt="barberologija.si – ROVRA Impact"></div></div>
-        <div id="p-cart">ORDER NOW</div>
-        <div id="p-url">barberologija.si</div>
+        <div id="p-browser">
+          <div id="p-sb"><span>9:41</span></div>
+          <img class="p-shot" id="p-home" src="assets/site-home.png" alt="barberologija.si">
+          <img class="p-shot" id="p-prod" src="assets/site-impact.png" alt="ROVRA Impact – barberologija.si">
+          <div id="p-sticky"><div id="p-price">150,00 €<s>210,00 €</s></div><div id="p-cart">ORDER NOW</div></div>
+          <div id="p-search">
+            <div id="p-field">{MAG}{chars}<span id="p-caret"></span></div>
+            <div id="p-result">
+              <img src="assets/rovra-impact-thumb.png" alt="">
+              <div><div id="p-rname">ROVRA IMPACT</div><div id="p-rsub">Brezžična mašinica · 9.000 obr/min</div><div id="p-rprice">150,00 €<s>210,00 €</s></div></div>
+            </div>
+          </div>
+          <div id="p-bbar"><div id="p-url"><i></i>barberologija.si</div></div>
+          <div class="p-tap" id="p-tap1" style="left:{SEARCH_X}px;top:{SEARCH_Y}px"></div>
+          <div class="p-tap" id="p-tap2" style="left:{SW // 2}px;top:{SB + 205}px"></div>
+          <div class="p-tap" id="p-tap3" style="left:{SW - 110}px;top:{SB + SITE_H - 40 + 75}px"></div>
+        </div>
       </div></div>
     </div>"""
+
+
+def tap(sel, t):
+    return f'        tl.fromTo("{sel}", {{ opacity: 0, scale: 0.4 }}, {{ keyframes: [ {{ opacity: 1, scale: 1, duration: 0.14 }}, {{ opacity: 0, scale: 1.5, duration: 0.3 }} ] }}, {t});'
+
+
+typing = "\n".join(f'        tl.fromTo("#p-ch{i}", {{ opacity: 0 }}, {{ opacity: 1, duration: 0.01 }}, {TYPE_AT + i * 0.09:.2f});' for i in range(len(QUERY)))
 js = f"""
-        tl.fromTo("#p-phone", {{ scale: 1.75 }}, {{ scale: 1, duration: 0.8, ease: "power3.inOut" }}, 0);
-        // the feed version: the bullet is already there, a hair from the clipper
+        tl.fromTo("#p-phone", {{ scale: 1.75 }}, {{ scale: 1, duration: 0.7, ease: "power3.inOut" }}, 0);
         tl.fromTo("#p-t1", {{ opacity: 0 }}, {{ opacity: 1, duration: 0.01 }}, {v4[0]});
         words("#p-t1 .p-l1 .wd", [{v4[0]}, {v4[1]}]);
         words("#p-t1 .p-l2 .wd", [{v4[2]}, {v4[3]}, {v4[4]}]);
-        tl.to("#p-t1", {{ opacity: 0, duration: 0.2 }}, {v5[0] - 0.25:.2f});
+        // the shop opens: homepage
+        tl.fromTo("#p-browser", {{ yPercent: 100 }}, {{ yPercent: 0, duration: 0.45, ease: "power3.out" }}, {HOME_IN});
+        tl.to("#p-feed", {{ opacity: 0, duration: 0.05 }}, {HOME_IN + 0.45:.2f});
+        tl.to("#p-t1", {{ opacity: 0, duration: 0.15 }}, {v5[0] - 0.18:.2f});
         tl.fromTo("#p-t2", {{ opacity: 0 }}, {{ opacity: 1, duration: 0.01 }}, {v5[0]});
         words("#p-t2 .p-l1 .wd", [{v5[0]}, {v5[1]}]);
         words("#p-t2 .p-l2 .wd", [{v5[2]}, {v5[3]}, {v5[4]}, {v5[5]}, {v5[6]}]);
-        // tap -> the shop opens on the clipper's product page
-        tl.fromTo("#p-tap", {{ opacity: 0, scale: 0.4 }}, {{ keyframes: [ {{ opacity: 1, scale: 1, duration: 0.18 }}, {{ opacity: 0, scale: 1.4, duration: 0.3 }} ] }}, {TAP});
-        tl.fromTo("#p-sitewrap", {{ yPercent: 100 }}, {{ yPercent: 0, duration: 0.55, ease: "power3.out" }}, {TAP + 0.2:.2f});
-        tl.fromTo("#p-site", {{ y: 0 }}, {{ y: -130, duration: 3.0, ease: "power1.inOut" }}, {TAP + 0.6:.2f});
-        tl.fromTo("#p-url", {{ opacity: 0, y: 20 }}, {{ opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }}, {TAP + 0.5:.2f});
-        tl.fromTo("#p-cart", {{ opacity: 0, y: 30, scale: 0.9 }}, {{ opacity: 1, y: 0, scale: 1, duration: 0.45, ease: "back.out(2)" }}, {v6[4]});
-        tl.fromTo("#p-cart", {{ scale: 1 }}, {{ keyframes: [ {{ scale: 0.94, duration: 0.08 }}, {{ scale: 1, duration: 0.2 }} ], immediateRender: false }}, {v6[6] + 0.3:.2f});
-        tl.to("#p-t2", {{ opacity: 0, duration: 0.2 }}, {v6[0] - 0.25:.2f});
+        // search: tap the magnifier, type "impact", result appears
+{tap("#p-tap1", SEARCH_TAP)}
+        tl.fromTo("#p-search", {{ yPercent: -110 }}, {{ yPercent: 0, duration: 0.28, ease: "power3.out" }}, {SEARCH_TAP + 0.1:.2f});
+{typing}
+        tl.fromTo("#p-caret", {{ opacity: 1 }}, {{ keyframes: [ {{ opacity: 0, duration: 0.2 }}, {{ opacity: 1, duration: 0.2 }}, {{ opacity: 0, duration: 0.2 }}, {{ opacity: 1, duration: 0.2 }}, {{ opacity: 0, duration: 0.2 }}, {{ opacity: 1, duration: 0.2 }} ] }}, {RESULT_AT});
+        tl.fromTo("#p-result", {{ opacity: 0, y: 14 }}, {{ opacity: 1, y: 0, duration: 0.25, ease: "power2.out" }}, {RESULT_AT});
+        // open the product
+{tap("#p-tap2", RESULT_TAP)}
+        tl.to("#p-search", {{ opacity: 0, duration: 0.15 }}, {PROD_IN});
+        tl.fromTo("#p-prod", {{ opacity: 0, x: 60 }}, {{ opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }}, {PROD_IN});
+        tl.fromTo("#p-sticky", {{ opacity: 0, y: 40 }}, {{ opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }}, {PROD_IN + 0.15:.2f});
+        tl.to("#p-t2", {{ opacity: 0, duration: 0.15 }}, {v6[0] - 0.18:.2f});
         tl.fromTo("#p-t3", {{ opacity: 0 }}, {{ opacity: 1, duration: 0.01 }}, {v6[0]});
         words("#p-t3 .p-l1 .wd", [{v6[0]}, {v6[1]}, {v6[2]}]);
         words("#p-t3 .p-l2 .wd", [{v6[3]}, {v6[4]}, {v6[5]}, {v6[6]}]);
-        tl.fromTo("#p-phone", {{ y: 0 }}, {{ y: -16, duration: 3.0, ease: "sine.inOut" }}, {TAP + 0.6:.2f});
+        // order now
+{tap("#p-tap3", ORDER_TAP)}
+        tl.fromTo("#p-cart", {{ scale: 1 }}, {{ keyframes: [ {{ scale: 0.93, duration: 0.08 }}, {{ scale: 1.04, duration: 0.15 }}, {{ scale: 1, duration: 0.2 }} ] }}, {ORDER_TAP});
+        tl.to("#p-cart", {{ backgroundColor: "{ACC}", duration: 0.2 }}, {ORDER_TAP + 0.1:.2f});
 """
 phone_html = wrap("phone", T_PHONE, css, body, js)
 
@@ -380,5 +451,5 @@ index = f"""<!doctype html>
 </html>
 """
 open("index.html", "w").write(index)
-json.dump({"VO_AT": VO_AT, "TOTAL": TOTAL, "T_MAIN": T_MAIN, "T_PHONE": T_PHONE, "TAP": round(T_MAIN + TAP, 2)}, open("build/timing.json", "w"))
+json.dump({"VO_AT": VO_AT, "TOTAL": TOTAL, "T_MAIN": T_MAIN, "WIRE_IN": WIRE_IN, "WIRE_OUT": WIRE_OUT, "TAP": round(B + RESULT_TAP, 2), "HOME_IN": round(B + HOME_IN, 2), "SEARCH_TAP": round(B + SEARCH_TAP, 2), "TYPE_AT": round(B + TYPE_AT, 2), "ORDER_TAP": round(B + ORDER_TAP, 2), "END": round(T_MAIN + T_PHONE, 2)}, open("build/timing.json", "w"))
 print("ok total", TOTAL, "edge", EDGE, "x_end", X_END1, X_END2, "tap", round(T_MAIN + TAP, 2))
