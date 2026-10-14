@@ -21,8 +21,8 @@
       #p-feed .p-top { position: absolute; left: 0; right: 0; top: 44px; text-align: center; font-size: 22px; font-weight: 600; }
       #p-feed .p-time { position: absolute; left: 44px; top: 22px; font-size: 18px; font-weight: 600; }
       #p-fclip { position: absolute; left: 290px; top: 360px; height: 340px; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.22)); }
-      #p-fbul { position: absolute; left: 189px; top: 425px; width: 115px; height: 32px; }
-      #p-fwake { position: absolute; right: 110px; top: 7px; width: 240px; height: 18px; border-radius: 9px;
+      #p-fbul { position: absolute; left: 218px; top: 429px; width: 86px; height: 24px; }
+      #p-fwake { position: absolute; right: 80px; top: 3px; width: 240px; height: 18px; border-radius: 9px;
         background: linear-gradient(90deg, rgba(150,148,140,0), rgba(150,148,140,0.22)); filter: blur(4px); }
       .p-ic { position: absolute; right: 30px; width: 30px; height: 30px; border: 2.5px solid #1c1c1a; border-radius: 50%; }
       #p-handle { position: absolute; left: 34px; bottom: 120px; font-size: 22px; font-weight: 600; display: flex; align-items: center; gap: 12px; }
@@ -49,13 +49,22 @@
       <div id="p-phone" data-layout-allow-overflow><div id="p-screen">
         <div id="p-feed">
           <div class="p-time">9:41</div><div class="p-top">For you</div>
-          <div id="p-fbul"><div id="p-fwake"></div><svg viewBox="0 0 220 60" width="115" height="32">
-  <defs><linearGradient id="brass2" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#4a3210"/><stop offset="0.22" stop-color="#c9963e"/><stop offset="0.38" stop-color="#f4d58c"/>
-    <stop offset="0.55" stop-color="#b98a37"/><stop offset="0.85" stop-color="#6b4a17"/><stop offset="1" stop-color="#2e1f08"/></linearGradient></defs>
-  <path d="M4 8 H112 C160 8 196 20 216 30 C196 40 160 52 112 52 H4 Z" fill="url(#brass2)"/>
-  <rect x="2" y="9" width="10" height="42" rx="2" fill="#5b3f14" opacity="0.8"/>
-  <path d="M112 10 V50" stroke="#3b2909" stroke-width="2" opacity="0.35"/>
+          <div id="p-fbul"><div id="p-fwake"></div><svg viewBox="0 0 220 60" width="86" height="24">
+  <defs>
+    <linearGradient id="brass2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a1208"/><stop offset="0.16" stop-color="#7a3a17"/><stop offset="0.30" stop-color="#d98a52"/>
+      <stop offset="0.38" stop-color="#ffd2a6"/><stop offset="0.47" stop-color="#d07a42"/><stop offset="0.72" stop-color="#7c3916"/><stop offset="1" stop-color="#1e0d05"/></linearGradient>
+    <linearGradient id="brass2t" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#000" stop-opacity="0.35"/><stop offset="0.12" stop-color="#000" stop-opacity="0"/>
+      <stop offset="0.75" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity="0.18"/></linearGradient>
+    <filter id="brass2b" x="-10%" y="-20%" width="120%" height="140%"><feGaussianBlur stdDeviation="1.1 0.15"/></filter>
+  </defs>
+  <g filter="url(#brass2b)">
+    <path d="M16 16 L5 22 Q3 30 5 38 L16 44 H112 C156 44 192 37 217 30.5 Q218 30 217 29.5 C192 23 156 16 112 16 Z" fill="url(#brass2)"/>
+    <path d="M16 16 L5 22 Q3 30 5 38 L16 44 H112 C156 44 192 37 217 30.5 Q218 30 217 29.5 C192 23 156 16 112 16 Z" fill="url(#brass2t)"/>
+    <path d="M96 16.5 V43.5" stroke="#3a1a08" stroke-width="2.2" opacity="0.55"/><path d="M99 17 V43" stroke="#ffd9b0" stroke-width="0.8" opacity="0.35"/>
+    <path d="M18 24 H150" stroke="#fff3e2" stroke-width="1.6" stroke-linecap="round" opacity="0.45"/>
+  </g>
 </svg></div>
           <img id="p-fclip" src="assets/rovra-impact-zelena.png" alt="">
           <div class="p-ic" style="top:760px"></div><div class="p-ic" style="top:820px"></div><div class="p-ic" style="top:880px"></div>
@@ -82,22 +91,22 @@
         // the feed version: the bullet is already there, a hair from the clipper
         tl.fromTo("#p-t1", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 0.3);
         words("#p-t1 .p-l1 .wd", [0.3, 0.49]);
-        words("#p-t1 .p-l2 .wd", [0.89, 1.22, 1.41]);
+        words("#p-t1 .p-l2 .wd", [0.85, 1.16, 1.35]);
         tl.to("#p-t1", { opacity: 0, duration: 0.2 }, 2.25);
         tl.fromTo("#p-t2", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 2.5);
-        words("#p-t2 .p-l1 .wd", [2.5, 2.65]);
-        words("#p-t2 .p-l2 .wd", [3.04, 3.17, 3.23, 3.35, 3.42]);
+        words("#p-t2 .p-l1 .wd", [2.5, 2.66]);
+        words("#p-t2 .p-l2 .wd", [3.04, 3.17, 3.24, 3.35, 3.42]);
         // tap -> the shop opens on the clipper's product page
         tl.fromTo("#p-tap", { opacity: 0, scale: 0.4 }, { keyframes: [ { opacity: 1, scale: 1, duration: 0.18 }, { opacity: 0, scale: 1.4, duration: 0.3 } ] }, 4.05);
         tl.fromTo("#p-sitewrap", { yPercent: 100 }, { yPercent: 0, duration: 0.55, ease: "power3.out" }, 4.25);
         tl.fromTo("#p-site", { y: 0 }, { y: -130, duration: 3.0, ease: "power1.inOut" }, 4.65);
         tl.fromTo("#p-url", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 4.55);
         tl.fromTo("#p-cart", { opacity: 0, y: 30, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: "back.out(2)" }, 5.4);
-        tl.fromTo("#p-cart", { scale: 1 }, { keyframes: [ { scale: 0.94, duration: 0.08 }, { scale: 1, duration: 0.2 } ], immediateRender: false }, 6.02);
+        tl.fromTo("#p-cart", { scale: 1 }, { keyframes: [ { scale: 0.94, duration: 0.08 }, { scale: 1, duration: 0.2 } ], immediateRender: false }, 5.98);
         tl.to("#p-t2", { opacity: 0, duration: 0.2 }, 4.35);
         tl.fromTo("#p-t3", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 4.6);
-        words("#p-t3 .p-l1 .wd", [4.6, 4.81, 4.9]);
-        words("#p-t3 .p-l2 .wd", [5.28, 5.4, 5.65, 5.72]);
+        words("#p-t3 .p-l1 .wd", [4.6, 4.82, 4.92]);
+        words("#p-t3 .p-l2 .wd", [5.28, 5.4, 5.62, 5.68]);
         tl.fromTo("#p-phone", { y: 0 }, { y: -16, duration: 3.0, ease: "sine.inOut" }, 4.65);
 
         tl.to({}, { duration: 7.2 }, 0);

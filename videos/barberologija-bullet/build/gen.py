@@ -19,16 +19,25 @@ FONTS = """
 """
 
 BULLET = """<svg viewBox="0 0 220 60" width="{w}" height="{h}">
-  <defs><linearGradient id="{id}" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#4a3210"/><stop offset="0.22" stop-color="#c9963e"/><stop offset="0.38" stop-color="#f4d58c"/>
-    <stop offset="0.55" stop-color="#b98a37"/><stop offset="0.85" stop-color="#6b4a17"/><stop offset="1" stop-color="#2e1f08"/></linearGradient></defs>
-  <path d="M4 8 H112 C160 8 196 20 216 30 C196 40 160 52 112 52 H4 Z" fill="url(#{id})"/>
-  <rect x="2" y="9" width="10" height="42" rx="2" fill="#5b3f14" opacity="0.8"/>
-  <path d="M112 10 V50" stroke="#3b2909" stroke-width="2" opacity="0.35"/>
+  <defs>
+    <linearGradient id="{id}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a1208"/><stop offset="0.16" stop-color="#7a3a17"/><stop offset="0.30" stop-color="#d98a52"/>
+      <stop offset="0.38" stop-color="#ffd2a6"/><stop offset="0.47" stop-color="#d07a42"/><stop offset="0.72" stop-color="#7c3916"/><stop offset="1" stop-color="#1e0d05"/></linearGradient>
+    <linearGradient id="{id}t" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#000" stop-opacity="0.35"/><stop offset="0.12" stop-color="#000" stop-opacity="0"/>
+      <stop offset="0.75" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity="0.18"/></linearGradient>
+    <filter id="{id}b" x="-10%" y="-20%" width="120%" height="140%"><feGaussianBlur stdDeviation="1.1 0.15"/></filter>
+  </defs>
+  <g filter="url(#{id}b)">
+    <path d="M16 16 L5 22 Q3 30 5 38 L16 44 H112 C156 44 192 37 217 30.5 Q218 30 217 29.5 C192 23 156 16 112 16 Z" fill="url(#{id})"/>
+    <path d="M16 16 L5 22 Q3 30 5 38 L16 44 H112 C156 44 192 37 217 30.5 Q218 30 217 29.5 C192 23 156 16 112 16 Z" fill="url(#{id}t)"/>
+    <path d="M96 16.5 V43.5" stroke="#3a1a08" stroke-width="2.2" opacity="0.55"/><path d="M99 17 V43" stroke="#ffd9b0" stroke-width="0.8" opacity="0.35"/>
+    <path d="M18 24 H150" stroke="#fff3e2" stroke-width="1.6" stroke-linecap="round" opacity="0.45"/>
+  </g>
 </svg>"""
 BULLET_WIRE = """<svg viewBox="0 0 220 60" width="{w}" height="{h}"><g fill="none" stroke="#2c2d29" stroke-width="2">
-  <path d="M4 8 H112 C160 8 196 20 216 30 C196 40 160 52 112 52 H4 Z"/>
-  <path d="M26 8 V52 M48 8 V52 M70 8 V52 M92 8 V52 M112 8 V52 M140 11 V49 M168 17 V43 M194 24 V36"/><path d="M4 30 H216"/></g></svg>"""
+  <path d="M16 16 L5 22 Q3 30 5 38 L16 44 H112 C156 44 192 37 217 30.5 Q218 30 217 29.5 C192 23 156 16 112 16 Z"/>
+  <path d="M30 16 V44 M50 16 V44 M70 16 V44 M96 16 V44 M112 16 V44 M140 18 V42 M168 23 V37 M194 26 V34"/><path d="M5 30 H217"/></g></svg>"""
 
 
 def wrap(cid, dur, css, body, js):
@@ -82,7 +91,7 @@ CX, CY, CH = 575, 470, 660
 CW = round(CH * 485 / 1226)
 HIT_Y = CY + int(CH * 0.24)
 EDGE = CX + round(CW * 0.103)          # clipper body edge at the bullet's height
-BW, BH = 230, 63
+BW, BH = 168, 46
 TIP = 226 / 220 * BW / (230 / 220)     # tip offset inside the bullet box (px)
 TIP = BW * 216 / 220
 X_END1 = round(EDGE - 14 - TIP)        # tip 14px away when the counter hits 001
@@ -113,12 +122,12 @@ css = f"""
       #m-rigw {{ opacity: 0; }}
       #m-bul {{ position: absolute; inset: 0; filter: drop-shadow(0 8px 6px rgba(0,0,0,0.22)); }}
       #m-bul svg {{ display: block; }}
-      #m-wake {{ position: absolute; right: {BW - 6}px; top: {BH // 2 - 9}px; width: 520px; height: 18px; border-radius: 9px;
-        background: linear-gradient(90deg, rgba(150,148,140,0), rgba(150,148,140,0.10) 60%, rgba(150,148,140,0.22)); filter: blur(5px); }}
-      #m-mach {{ position: absolute; left: {round(TIP) - 120}px; top: {BH // 2 - 90}px; width: 140px; height: 180px; opacity: 0.55; }}
+      #m-wake {{ position: absolute; right: {BW - 6}px; top: {BH // 2 - 6}px; width: 420px; height: 12px; border-radius: 6px;
+        background: linear-gradient(90deg, rgba(150,148,140,0), rgba(150,148,140,0.08) 60%, rgba(150,148,140,0.20)); filter: blur(4px); }}
+      #m-mach {{ position: absolute; left: {round(TIP) - 120}px; top: {BH // 2 - 90}px; width: 140px; height: 180px; opacity: 0.5; transform: scale(0.72); transform-origin: 120px 90px; }}
       #m-bshadow {{ position: absolute; left: 10px; top: {CY + CH - 22 - (HIT_Y - BH // 2)}px; width: {BW - 30}px; height: 14px; border-radius: 50%;
         background: radial-gradient(closest-side, rgba(0,0,0,0.22), rgba(0,0,0,0)); filter: blur(5px); }}
-      #m-sheen {{ position: absolute; inset: 6px 30px 30px 6px; border-radius: 30px; opacity: 0.5;
+      #m-sheen {{ position: absolute; inset: 12px 24px 26px 6px; border-radius: 20px; opacity: 0.35;
         background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,250,225,0.55) 50%, rgba(255,255,255,0)); mix-blend-mode: screen; }}
       .m-lab {{ position: absolute; font-size: 17px; letter-spacing: 0.06em; text-transform: none; color: #4b4b46; opacity: 0; white-space: nowrap; }}
       #m-hud {{ position: absolute; inset: 0; }}
@@ -247,8 +256,8 @@ css = f"""
       #p-feed .p-top {{ position: absolute; left: 0; right: 0; top: 44px; text-align: center; font-size: 22px; font-weight: 600; }}
       #p-feed .p-time {{ position: absolute; left: 44px; top: 22px; font-size: 18px; font-weight: 600; }}
       #p-fclip {{ position: absolute; left: 290px; top: 360px; height: 340px; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.22)); }}
-      #p-fbul {{ position: absolute; left: {290 + round(340 * 485 / 1226 * 0.103) - 2 - round(115 * 216 / 220)}px; top: {360 + int(340 * 0.24) - 16}px; width: 115px; height: 32px; }}
-      #p-fwake {{ position: absolute; right: 110px; top: 7px; width: 240px; height: 18px; border-radius: 9px;
+      #p-fbul {{ position: absolute; left: {290 + round(340 * 485 / 1226 * 0.103) - 2 - round(86 * 216 / 220)}px; top: {360 + int(340 * 0.24) - 12}px; width: 86px; height: 24px; }}
+      #p-fwake {{ position: absolute; right: 80px; top: 3px; width: 240px; height: 18px; border-radius: 9px;
         background: linear-gradient(90deg, rgba(150,148,140,0), rgba(150,148,140,0.22)); filter: blur(4px); }}
       .p-ic {{ position: absolute; right: 30px; width: 30px; height: 30px; border: 2.5px solid {INK}; border-radius: 50%; }}
       #p-handle {{ position: absolute; left: 34px; bottom: 120px; font-size: 22px; font-weight: 600; display: flex; align-items: center; gap: 12px; }}
@@ -275,7 +284,7 @@ body = f"""    <div id="p-bg" class="clip" data-start="0" data-duration="{T_PHON
       <div id="p-phone" data-layout-allow-overflow><div id="p-screen">
         <div id="p-feed">
           <div class="p-time">9:41</div><div class="p-top">For you</div>
-          <div id="p-fbul"><div id="p-fwake"></div>{BULLET.format(w=115, h=32, id="brass2")}</div>
+          <div id="p-fbul"><div id="p-fwake"></div>{BULLET.format(w=86, h=24, id="brass2")}</div>
           <img id="p-fclip" src="assets/rovra-impact-zelena.png" alt="">
           <div class="p-ic" style="top:760px"></div><div class="p-ic" style="top:820px"></div><div class="p-ic" style="top:880px"></div>
           <div id="p-handle"><i></i>barberologija</div>
