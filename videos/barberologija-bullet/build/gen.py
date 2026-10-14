@@ -103,10 +103,10 @@ css = f"""
       #m-rec {{ position: absolute; left: 70px; top: 96px; font-size: 22px; color: #3b3a36; }}
       #m-rec i {{ display: inline-block; width: 14px; height: 14px; border-radius: 50%; background: #d23a2a; margin-right: 12px; vertical-align: 1px; }}
       #m-fps {{ position: absolute; right: 70px; top: 96px; font-size: 22px; color: #3b3a36; }}
-      #m-count {{ position: absolute; left: 0; right: 0; top: 1250px; text-align: center; }}
+      #m-count {{ position: absolute; left: 0; right: 0; top: 1330px; z-index: 5; text-align: center; }}
       #m-count .mono {{ font-size: 24px; color: #55544f; }}
       #m-num {{ font-family: "Inter", sans-serif; font-weight: 300; font-size: 168px; line-height: 1.05; letter-spacing: -0.02em; color: {INK}; font-variant-numeric: tabular-nums; }}
-      .m-txt {{ position: absolute; left: 60px; right: 60px; top: 1240px; text-align: center; opacity: 0; }}
+      .m-txt {{ position: absolute; left: 60px; right: 60px; top: 1300px; z-index: 5; text-align: center; opacity: 0; }}
       .m-l1 {{ font-size: 46px; font-weight: 400; color: {SOFT}; }}
       .m-l2 {{ font-size: 82px; font-weight: 500; letter-spacing: -0.02em; margin-top: 8px; color: {INK}; }}
       .m-b {{ font-weight: 700; }}
@@ -132,9 +132,9 @@ body = f"""    <div id="m-bg" class="clip" data-start="0" data-duration="{T_MAIN
         <div id="m-trail"></div>
         <div id="m-bullet">{BULLET.format(w=BW, h=BH, id="brass")}</div>
         <div id="m-bulletw">{BULLET_WIRE.format(w=BW, h=BH)}</div>
-        <div class="m-lab mono" id="m-lab1" style="left:{CX + CW - 60}px;top:{CY - 50}px">clipper.obj &nbsp;|&nbsp; 0 polygons wasted</div>
+        <div class="m-lab mono" id="m-lab1" style="left:120px;top:{CY - 120}px">clipper.obj &nbsp;|&nbsp; 0 polygons wasted</div>
         <div class="m-lab mono" id="m-lab2" style="left:{CX - 330}px;top:{HIT_Y - 62}px">projectile.obj</div>
-        <div class="m-lab mono" id="m-lab3" style="left:{CX - 250}px;top:{CY + CH + 40}px">velocity = 0.00001x &nbsp;|&nbsp; impact = never</div>
+        <div class="m-lab mono" id="m-lab3" style="left:120px;top:{CY - 84}px">velocity = 0.00001x &nbsp;|&nbsp; impact = never</div>
       </div>
     </div>
     <div id="m-ui" class="clip" data-start="0" data-duration="{T_MAIN}" data-track-index="3">
@@ -171,7 +171,7 @@ js = f"""
         // ---- shot 1 (0-7.6): bullet crawls in, camera pushes toward the contact point ----
         tl.fromTo("#m-bullet", {{ x: -60 }}, {{ x: {CX - BW - 70}, duration: 7.6, ease: "none" }}, 0);
         tl.fromTo("#m-trail", {{ scaleX: 0.6 }}, {{ scaleX: 2.6, duration: 7.6, ease: "none" }}, 0);
-        tl.fromTo("#m-stage", {{ scale: 1 }}, {{ scale: 1.7, duration: 7.6, ease: "power1.in" }}, 0);
+        tl.fromTo("#m-stage", {{ scale: 1 }}, {{ scale: 1.45, duration: 7.6, ease: "power1.in" }}, 0);
         tl.fromTo("#m-streaks", {{ opacity: 0.5, x: 0 }}, {{ opacity: 1, x: 40, duration: 7.6, ease: "none" }}, 0);
         // ---- cut to wide (7.6): bullet nearly touching, still creeping ----
         tl.to("#m-stage", {{ scale: 1.08, duration: 0.01 }}, 7.6);
@@ -225,7 +225,7 @@ css = f"""
       #p-bar {{ position: absolute; left: 34px; right: 34px; bottom: 96px; height: 3px; background: {INK}; border-radius: 2px; }}
       #p-site {{ position: absolute; left: 0; top: 0; width: 100%; }}
       #p-site img {{ display: block; width: 100%; }}
-      #p-sitewrap {{ position: absolute; inset: 0; overflow: hidden; }}
+      #p-sitewrap {{ position: absolute; inset: 0; overflow: hidden; background: #ffffff; }}
       #p-url {{ position: absolute; left: 50%; bottom: 26px; transform: translateX(-50%); padding: 12px 28px; border-radius: 40px; background: rgba(255,255,255,0.94);
         font-size: 24px; font-weight: 600; box-shadow: 0 6px 18px rgba(0,0,0,0.18); white-space: nowrap; }}
       #p-tap {{ position: absolute; left: 240px; top: 470px; width: 90px; height: 90px; border-radius: 50%; border: 4px solid rgba(78,138,14,0.9); opacity: 0; }}

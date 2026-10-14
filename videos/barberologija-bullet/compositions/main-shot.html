@@ -39,10 +39,10 @@
       #m-rec { position: absolute; left: 70px; top: 96px; font-size: 22px; color: #3b3a36; }
       #m-rec i { display: inline-block; width: 14px; height: 14px; border-radius: 50%; background: #d23a2a; margin-right: 12px; vertical-align: 1px; }
       #m-fps { position: absolute; right: 70px; top: 96px; font-size: 22px; color: #3b3a36; }
-      #m-count { position: absolute; left: 0; right: 0; top: 1250px; text-align: center; }
+      #m-count { position: absolute; left: 0; right: 0; top: 1330px; z-index: 5; text-align: center; }
       #m-count .mono { font-size: 24px; color: #55544f; }
       #m-num { font-family: "Inter", sans-serif; font-weight: 300; font-size: 168px; line-height: 1.05; letter-spacing: -0.02em; color: #1c1c1a; font-variant-numeric: tabular-nums; }
-      .m-txt { position: absolute; left: 60px; right: 60px; top: 1240px; text-align: center; opacity: 0; }
+      .m-txt { position: absolute; left: 60px; right: 60px; top: 1300px; z-index: 5; text-align: center; opacity: 0; }
       .m-l1 { font-size: 46px; font-weight: 400; color: #6d6b66; }
       .m-l2 { font-size: 82px; font-weight: 500; letter-spacing: -0.02em; margin-top: 8px; color: #1c1c1a; }
       .m-b { font-weight: 700; }
@@ -73,9 +73,9 @@
         <div id="m-bulletw"><svg viewBox="0 0 220 60" width="230" height="63"><g fill="none" stroke="#2c2d29" stroke-width="2">
   <path d="M4 8 H112 C160 8 196 20 216 30 C196 40 160 52 112 52 H4 Z"/>
   <path d="M26 8 V52 M48 8 V52 M70 8 V52 M92 8 V52 M112 8 V52 M140 11 V49 M168 17 V43 M194 24 V36"/><path d="M4 30 H216"/></g></svg></div>
-        <div class="m-lab mono" id="m-lab1" style="left:776px;top:420px">clipper.obj &nbsp;|&nbsp; 0 polygons wasted</div>
+        <div class="m-lab mono" id="m-lab1" style="left:120px;top:350px">clipper.obj &nbsp;|&nbsp; 0 polygons wasted</div>
         <div class="m-lab mono" id="m-lab2" style="left:245px;top:566px">projectile.obj</div>
-        <div class="m-lab mono" id="m-lab3" style="left:325px;top:1170px">velocity = 0.00001x &nbsp;|&nbsp; impact = never</div>
+        <div class="m-lab mono" id="m-lab3" style="left:120px;top:386px">velocity = 0.00001x &nbsp;|&nbsp; impact = never</div>
       </div>
     </div>
     <div id="m-ui" class="clip" data-start="0" data-duration="17.0" data-track-index="3">
@@ -120,7 +120,7 @@
         // ---- shot 1 (0-7.6): bullet crawls in, camera pushes toward the contact point ----
         tl.fromTo("#m-bullet", { x: -60 }, { x: 275, duration: 7.6, ease: "none" }, 0);
         tl.fromTo("#m-trail", { scaleX: 0.6 }, { scaleX: 2.6, duration: 7.6, ease: "none" }, 0);
-        tl.fromTo("#m-stage", { scale: 1 }, { scale: 1.7, duration: 7.6, ease: "power1.in" }, 0);
+        tl.fromTo("#m-stage", { scale: 1 }, { scale: 1.45, duration: 7.6, ease: "power1.in" }, 0);
         tl.fromTo("#m-streaks", { opacity: 0.5, x: 0 }, { opacity: 1, x: 40, duration: 7.6, ease: "none" }, 0);
         // ---- cut to wide (7.6): bullet nearly touching, still creeping ----
         tl.to("#m-stage", { scale: 1.08, duration: 0.01 }, 7.6);
