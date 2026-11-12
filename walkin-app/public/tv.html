@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shop Screen</title>
+<link rel="stylesheet" href="/style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<style>
+  body { background: var(--green); color: #fff; min-height: 100vh; }
+  .tv { display: grid; grid-template-columns: 1.4fr 1fr; gap: 3vw; padding: 4vw; min-height: 100vh; align-items: center; }
+  h1 { font-size: 4vw; margin: 0 0 2vw; letter-spacing: -.02em; }
+  .lbl { font-size: 1.6vw; opacity: .7; font-weight: 600; margin-bottom: .8vw; }
+  .serving { display: flex; gap: 1.5vw; flex-wrap: wrap; margin-bottom: 3vw; }
+  .chip { background: #ffffff14; border-radius: 1.5vw; padding: 1.2vw 2vw; }
+  .chip .n { font-size: 6vw; font-weight: 800; color: var(--mint); line-height: 1; }
+  .chip .c { font-size: 1.4vw; opacity: .7; }
+  .next { font-size: 3vw; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .qr { background: #fff; color: var(--ink); border-radius: 2vw; padding: 2.5vw; text-align: center; }
+  .qr img, .qr svg { width: 100%; height: auto; max-width: 26vw; }
+  .qr b { display: block; font-size: 2.4vw; margin-bottom: .5vw; }
+  .qr span { font-size: 1.4vw; color: var(--muted); }
+  @media (max-width: 700px) { .tv { grid-template-columns: 1fr; } h1 { font-size: 9vw; } .lbl { font-size: 4vw; } .chip .n { font-size: 14vw; } .next { font-size: 6vw; } .qr b { font-size: 6vw; } .qr span, .chip .c { font-size: 3.5vw; } .qr img { max-width: 70vw; } }
+</style>
+</head>
+<body>
+<div class="tv">
+  <div>
+    <h1 id="shopName">…</h1>
+    <div class="lbl">Now in the chair</div>
+    <div class="serving" id="serving"></div>
+    <div class="lbl">Waiting</div>
+    <div class="next" id="next"></div>
+  </div>
+  <div class="qr">
+    <b>Scan to take a number</b>
+    <div id="qr"></div>
+    <span>See your live place in line and wait wherever you like.</span>
+  </div>
+</div>
+<script>
+const $ = id => document.getElementById(id);
+const joinUrl = location.origin + '/';
+try {
+  const q = qrcode(0, 'M'); q.addData(joinUrl); q.make();
+  $('qr').innerHTML = q.createSvgTag({ cellSize: 8, margin: 2, scalable: true });
+} catch { $('qr').innerHTML = `<p style="font-size:2vw;word-break:break-all">${joinUrl}</p>`; }
+
+async function load() {
+  const s = await (await fetch('/api/state')).json();
+  $('shopName').textContent = s.shop.open ? s.shop.name : s.shop.name + ' · walk-ins closed';
+  $('serving').innerHTML = s.serving.length
+    ? s.serving.sort((a, b) => a.chair - b.chair).map(x => `<div class="chip"><div class="n">${x.number}</div><div class="c">Chair ${x.chair}</div></div>`).join('')
+    : '<div class="chip"><div class="c" style="font-size:2vw;opacity:1">Chairs free — walk right in</div></div>';
+  $('next').textContent = s.queue.length
+    ? s.queue.slice(0, 8).map(x => x.number).join('  ·  ') + `   — new arrivals ~${s.nextWait} min`
+    : 'Nobody waiting';
+}
+load();
+new EventSource('/events').onmessage = load;
+setInterval(load, 30000);
+</script>
+</body>
+</html>
