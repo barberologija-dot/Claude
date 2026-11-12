@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="sl">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Shop Screen</title>
+<title>Zaslon v brivnici</title>
 <link rel="stylesheet" href="/style.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <style>
@@ -27,15 +27,15 @@
 <div class="tv">
   <div>
     <h1 id="shopName">…</h1>
-    <div class="lbl">Now in the chair</div>
+    <div class="lbl">Trenutno na stolu</div>
     <div class="serving" id="serving"></div>
-    <div class="lbl">Waiting</div>
+    <div class="lbl">Čakajo</div>
     <div class="next" id="next"></div>
   </div>
   <div class="qr">
-    <b>Scan to take a number</b>
+    <b>Skeniraj in vzemi številko</b>
     <div id="qr"></div>
-    <span>See your live place in line and wait wherever you like.</span>
+    <span>Spremljaj svoje mesto v vrsti v živo in počakaj, kjer želiš – tudi na WhatsAppu.</span>
   </div>
 </div>
 <script>
@@ -48,13 +48,13 @@ try {
 
 async function load() {
   const s = await (await fetch('/api/state')).json();
-  $('shopName').textContent = s.shop.open ? s.shop.name : s.shop.name + ' · walk-ins closed';
+  $('shopName').textContent = s.shop.open ? s.shop.name : s.shop.name + ' · zaprto za nove stranke';
   $('serving').innerHTML = s.serving.length
-    ? s.serving.sort((a, b) => a.chair - b.chair).map(x => `<div class="chip"><div class="n">${x.number}</div><div class="c">Chair ${x.chair}</div></div>`).join('')
-    : '<div class="chip"><div class="c" style="font-size:2vw;opacity:1">Chairs free — walk right in</div></div>';
+    ? s.serving.sort((a, b) => a.chair - b.chair).map(x => `<div class="chip"><div class="n">${x.number}</div><div class="c">Stol ${x.chair}</div></div>`).join('')
+    : '<div class="chip"><div class="c" style="font-size:2vw;opacity:1">Stoli so prosti – kar vstopite</div></div>';
   $('next').textContent = s.queue.length
-    ? s.queue.slice(0, 8).map(x => x.number).join('  ·  ') + `   — new arrivals ~${s.nextWait} min`
-    : 'Nobody waiting';
+    ? s.queue.slice(0, 8).map(x => x.number).join('  ·  ') + `   — novi prihodi ~${s.nextWait} min`
+    : 'Nihče ne čaka';
 }
 load();
 new EventSource('/events').onmessage = load;

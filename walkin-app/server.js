@@ -5,6 +5,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const wa = require('./whatsapp');
 
 const PORT = process.env.PORT || 3000;
 const DATA_FILE = process.env.DATA_FILE || path.join(__dirname, 'data.json');
@@ -14,9 +15,9 @@ const PUBLIC = path.join(__dirname, 'public');
 const defaultState = () => ({
   shop: { name: 'Barberologija', open: true, chairs: 2, pin: process.env.BARBER_PIN || '1234' },
   services: [
-    { id: 'cut', name: 'Haircut', price: 10, minutes: 20 },
-    { id: 'beard', name: 'Beard', price: 5, minutes: 10 },
-    { id: 'full', name: 'Cut + Beard', price: 14, minutes: 30 },
+    { id: 'cut', name: 'Striženje', price: 10, minutes: 20 },
+    { id: 'beard', name: 'Brada', price: 5, minutes: 10 },
+    { id: 'full', name: 'Striženje + brada', price: 14, minutes: 30 },
   ],
   day: today(),
   nextNumber: 1,
@@ -24,7 +25,8 @@ const defaultState = () => ({
   recent: [], // last actual durations, in minutes, used to learn real speed
 });
 
-function today() { return new Date().toISOString().slice(0, 10); }
+// Calendar day in the shop's time zone (numbers restart at #1 each day).
+function today() { return new Date().toLocaleDateString('sv-SE', { timeZone: process.env.TZ_SHOP || 'Europe/Ljubljana' }); }
 
 let state;
 try { state = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8')); }
@@ -98,6 +100,7 @@ function publicView(token) {
     waitingCount: w.length,
     queue: w.map(t => ({ number: t.number, eta: e[t.id] })),
     nextWait: e.next,
+    whatsapp: wa.enabled,
   };
   if (token) {
     const t = state.tickets.find(x => x.token === token);
@@ -108,6 +111,8 @@ function publicView(token) {
         ahead: t.status === 'waiting' ? w.findIndex(x => x.id === t.id) : 0,
         eta: t.status === 'waiting' ? e[t.id] : 0,
         joinedAt: t.joinedAt,
+        whatsapp: !!t.waPhone,
+        waLink: t.waPhone ? null : wa.waLink(t.code),
       };
     }
   }
@@ -122,7 +127,7 @@ function adminView() {
     tickets: state.tickets
       .filter(t => t.status === 'waiting' || t.status === 'serving')
       .sort((a, b) => a.number - b.number)
-      .map(t => ({ ...t, token: undefined, eta: e[t.id], serviceName: service(t.serviceId).name })),
+      .map(t => ({ ...t, token: undefined, code: undefined, waPhone: undefined, waSent: undefined, whatsapp: !!t.waPhone, eta: e[t.id], serviceName: service(t.serviceId).name })),
     doneToday: state.tickets.filter(t => t.status === 'done').length,
   };
 }
@@ -133,8 +138,9 @@ function addTicket(name, serviceId, phone) {
   const t = {
     id: crypto.randomUUID(),
     token: crypto.randomBytes(16).toString('hex'),
+    code: newCode(),
     number: state.nextNumber++,
-    name: String(name || '').trim().slice(0, 40) || 'Guest',
+    name: String(name || '').trim().slice(0, 40) || 'Gost',
     serviceId: state.services.some(s => s.id === serviceId) ? serviceId : state.services[0].id,
     phone: !!phone,
     status: 'waiting',
@@ -142,6 +148,15 @@ function addTicket(name, serviceId, phone) {
   };
   state.tickets.push(t);
   return t;
+}
+
+// Short code the customer sends on WhatsApp to link their phone to the ticket.
+function newCode() {
+  const A = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let c;
+  do c = Array.from(crypto.randomBytes(5), b => A[b % A.length]).join('');
+  while (state.tickets.some(t => t.code === c));
+  return c;
 }
 
 function freeChair() {
@@ -160,14 +175,64 @@ function finish(t, status) {
   t.endedAt = Date.now();
 }
 
+// ---------- WhatsApp ----------
+// Send each alert once: "head over soon", "nobody ahead", "your turn", "skipped".
+function whatsappAlerts() {
+  if (!wa.enabled) return;
+  const w = waiting(), e = etas();
+  for (const t of state.tickets) {
+    if (!t.waPhone || !wa.inWindow(t)) continue;
+    const sent = t.waSent || (t.waSent = {});
+    const once = (key, text) => { if (!sent[key]) { sent[key] = Date.now(); wa.send(t.waPhone, text); } };
+    if (t.status === 'serving') { sent.soon ||= 1; sent.next ||= 1; once('turn', wa.T.turn(t)); }
+    else if (t.status === 'noshow') once('noshow', wa.T.noshow(t));
+    else if (t.status === 'waiting') {
+      const ahead = w.indexOf(t), eta = e[t.id];
+      if (ahead === 0) { sent.soon ||= 1; once('next', wa.T.next(t)); }
+      else if (eta <= wa.cfg.soonMin) once('soon', wa.T.soon(t, ahead, eta));
+    }
+  }
+}
+
+function handleWhatsApp(from, text) {
+  rollDay();
+  const cmd = text.trim().toUpperCase();
+  const code = wa.parseCode(text);
+  const active = state.tickets.find(t => t.waPhone === from && (t.status === 'waiting' || t.status === 'serving'));
+  const pos = t => { const w = waiting(); return { ahead: Math.max(0, w.indexOf(t)), eta: etas()[t.id] || 0 }; };
+
+  if (code) {
+    const t = state.tickets.find(x => x.code === code && (x.status === 'waiting' || x.status === 'serving'));
+    if (!t) return wa.send(from, wa.T.unknownCode());
+    t.waPhone = from; t.waAt = Date.now(); t.waSent = {};
+    const { ahead, eta } = pos(t);
+    wa.send(from, wa.T.linked(t, state.shop.name, ahead, eta));
+    if (ahead === 0 || t.status === 'serving') t.waSent.soon = t.waSent.next = 1; // already told in the welcome
+    else if (eta <= wa.cfg.soonMin) t.waSent.soon = 1;
+    return broadcast();
+  }
+  if (active) active.waAt = Date.now(); // keeps the 24 h reply window open
+  if (active && /^(ODJAVA|PREKLI[CČ]I|STOP)\b/.test(cmd)) {
+    if (active.status === 'waiting') finish(active, 'cancelled');
+    wa.send(from, wa.T.cancelled());
+    return broadcast();
+  }
+  if (active && /^(STANJE|STATUS)\b/.test(cmd)) {
+    const { ahead, eta } = pos(active);
+    return wa.send(from, wa.T.status(active, ahead, eta));
+  }
+  wa.send(from, wa.T.help());
+}
+
 // ---------- live updates (Server-Sent Events) ----------
 const clients = new Set();
 function broadcast() {
   save();
+  whatsappAlerts();
   for (const res of clients) res.write('data: update\n\n');
 }
 setInterval(() => { for (const res of clients) res.write(': ping\n\n'); }, 25000);
-setInterval(() => { if (clients.size) broadcast(); }, 60000); // refresh ETAs each minute
+setInterval(broadcast, 60000); // refresh ETAs (and WhatsApp alerts) each minute
 
 // ---------- http ----------
 const json = (res, code, body) => {
@@ -175,12 +240,15 @@ const json = (res, code, body) => {
   res.end(JSON.stringify(body));
 };
 
-function readBody(req) {
+function readRaw(req) {
   return new Promise(resolve => {
-    let d = '';
-    req.on('data', c => { d += c; if (d.length > 1e5) req.destroy(); });
-    req.on('end', () => { try { resolve(JSON.parse(d || '{}')); } catch { resolve({}); } });
+    const chunks = []; let n = 0;
+    req.on('data', c => { n += c.length; if (n > 1e6) req.destroy(); else chunks.push(c); });
+    req.on('end', () => resolve(Buffer.concat(chunks)));
   });
+}
+async function readBody(req) {
+  try { return JSON.parse((await readRaw(req)).toString() || '{}'); } catch { return {}; }
 }
 
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.json': 'application/json', '.png': 'image/png' };
@@ -197,13 +265,30 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  // WhatsApp webhook (set this URL in the Meta developer console)
+  if (p === '/webhook/whatsapp') {
+    if (req.method === 'GET') {
+      const q = url.searchParams;
+      if (q.get('hub.mode') === 'subscribe' && q.get('hub.verify_token') === wa.cfg.verifyToken) {
+        res.writeHead(200); return res.end(q.get('hub.challenge'));
+      }
+      res.writeHead(403); return res.end();
+    }
+    const raw = await readRaw(req);
+    if (!wa.validSignature(raw, req.headers['x-hub-signature-256'])) { res.writeHead(401); return res.end(); }
+    res.writeHead(200); res.end(); // answer Meta quickly
+    let payload; try { payload = JSON.parse(raw.toString()); } catch { return; }
+    for (const m of wa.inboundMessages(payload)) handleWhatsApp(m.from, m.text);
+    return;
+  }
+
   if (p.startsWith('/api/')) {
     if (req.method === 'GET' && p === '/api/state') return json(res, 200, publicView(url.searchParams.get('token')));
 
     const body = req.method === 'POST' ? await readBody(req) : {};
 
     if (p === '/api/join' && req.method === 'POST') {
-      if (!state.shop.open) return json(res, 409, { error: 'The shop is not taking walk-ins right now.' });
+      if (!state.shop.open) return json(res, 409, { error: 'Brivnica trenutno ne sprejema strank brez naročila.' });
       const t = addTicket(body.name, body.serviceId, true);
       broadcast();
       return json(res, 200, { token: t.token, number: t.number });
@@ -216,25 +301,25 @@ const server = http.createServer(async (req, res) => {
 
     // Barber-only endpoints
     if (p.startsWith('/api/admin/')) {
-      if (req.headers['x-pin'] !== String(state.shop.pin)) return json(res, 401, { error: 'Wrong PIN' });
+      if (req.headers['x-pin'] !== String(state.shop.pin)) return json(res, 401, { error: 'Napačen PIN' });
       const t = body.id && state.tickets.find(x => x.id === body.id);
       switch (p) {
         case '/api/admin/state': return json(res, 200, adminView());
         case '/api/admin/add': addTicket(body.name, body.serviceId, false); break;
         case '/api/admin/next': {
           const chair = body.chair || freeChair();
-          if (!chair) return json(res, 409, { error: 'All chairs are busy. Finish a cut first.' });
+          if (!chair) return json(res, 409, { error: 'Vsi stoli so zasedeni. Najprej zaključi striženje.' });
           const cur = serving().find(x => x.chair === chair);
           if (cur) finish(cur, 'done');
           const n = waiting()[0];
-          if (!n) return json(res, 409, { error: 'Nobody is waiting.' });
+          if (!n) return json(res, 409, { error: 'Nihče ne čaka.' });
           n.status = 'serving'; n.chair = chair; n.startedAt = Date.now();
           break;
         }
         case '/api/admin/start':
           if (t && t.status === 'waiting') {
             const chair = body.chair || freeChair();
-            if (!chair) return json(res, 409, { error: 'All chairs are busy.' });
+            if (!chair) return json(res, 409, { error: 'Vsi stoli so zasedeni.' });
             t.status = 'serving'; t.chair = chair; t.startedAt = Date.now();
           }
           break;
@@ -249,7 +334,7 @@ const server = http.createServer(async (req, res) => {
           if (body.pin) s.pin = String(body.pin).slice(0, 12);
           if (Array.isArray(body.services) && body.services.length) {
             state.services = body.services.slice(0, 12).map((x, i) => ({
-              id: String(x.id || 's' + i).slice(0, 20), name: String(x.name || 'Service').slice(0, 30),
+              id: String(x.id || 's' + i).slice(0, 20), name: String(x.name || 'Storitev').slice(0, 30),
               price: +x.price || 0, minutes: Math.max(1, +x.minutes || 15),
             }));
           }
@@ -257,12 +342,12 @@ const server = http.createServer(async (req, res) => {
         }
         case '/api/admin/reset':
           state.tickets = []; state.nextNumber = 1; break;
-        default: return json(res, 404, { error: 'Not found' });
+        default: return json(res, 404, { error: 'Ni najdeno' });
       }
       broadcast();
       return json(res, 200, adminView());
     }
-    return json(res, 404, { error: 'Not found' });
+    return json(res, 404, { error: 'Ni najdeno' });
   }
 
   // Static files
@@ -280,5 +365,6 @@ server.listen(PORT, () => {
   console.log(`Walk-in queue running:
   Customers : http://localhost:${PORT}/
   Barber    : http://localhost:${PORT}/barber   (PIN ${state.shop.pin})
-  Shop TV   : http://localhost:${PORT}/tv`);
+  Shop TV   : http://localhost:${PORT}/tv
+  WhatsApp  : ${wa.enabled ? 'ON, webhook at /webhook/whatsapp' : 'off (set WA_TOKEN, WA_PHONE_ID, WA_NUMBER)'}`);
 });
