@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="sl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0f4d36">
+<title>Nadzorna plošča</title>
+<link rel="stylesheet" href="/style.css">
+<style>
+  .wrap { max-width: 720px; }
+  .chairs { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 12px; }
+  .chair h3 { margin: 0 0 6px; font-size: 14px; color: var(--muted); }
+  .chair .who { font-size: 22px; font-weight: 800; margin-bottom: 2px; }
+  .chair .timer { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 14px; margin-bottom: 10px; }
+  .q { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .q:last-child { border-bottom: 0; }
+  .q .no { width: 46px; height: 46px; border-radius: 12px; background: var(--green); color: var(--mint); display: grid; place-items: center; font-weight: 800; font-size: 20px; flex: none; }
+  .q .info { flex: 1; min-width: 0; }
+  .q .info b { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .q .acts { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+  .tag { font-size: 11px; font-weight: 700; padding: 2px 6px; border-radius: 6px; background: var(--line); color: var(--muted); margin-left: 6px; vertical-align: middle; }
+  .toggle { display: flex; gap: 8px; }
+  h2 { font-size: 16px; margin: 0 0 10px; }
+  details summary { cursor: pointer; font-weight: 700; }
+  .svcRow { display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 6px; }
+  .svcRow input { margin-bottom: 6px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><div class="brand" id="shopName">Brivnica</div><div class="live" id="live">V živo</div></div>
+
+  <section id="login" class="card" style="max-width:360px;margin:40px auto">
+    <h2>Prijava za brivce</h2>
+    <label for="pin">PIN</label>
+    <input id="pin" type="password" inputmode="numeric" autocomplete="current-password">
+    <button class="btn" id="loginBtn">Odpri nadzorno ploščo</button>
+    <div class="err" id="loginErr"></div>
+  </section>
+
+  <section id="app" class="hidden">
+    <div class="grid2">
+      <div class="stat"><div class="lbl">Čaka</div><div class="big" id="sWaiting">0</div></div>
+      <div class="stat dark"><div class="lbl">Danes končanih · povp.</div><div class="big" id="sDone">0</div></div>
+    </div>
+
+    <div class="chairs" id="chairs"></div>
+    <div class="err" id="err"></div>
+
+    <div class="card">
+      <div class="row" style="justify-content:space-between;margin-bottom:6px"><h2 style="margin:0">Vrsta</h2></div>
+      <div id="queue"></div>
+    </div>
+
+    <div class="card">
+      <h2>Dodaj stranko brez telefona</h2>
+      <div class="row"><input id="addName" type="text" placeholder="Ime" style="margin:0"><select id="addSvc" style="margin:0;width:auto"></select><button class="btn sm" id="addBtn">Dodaj</button></div>
+    </div>
+
+    <div class="card">
+      <details>
+        <summary>Nastavitve</summary>
+        <div style="height:12px"></div>
+        <div class="toggle" style="margin-bottom:14px">
+          <button class="btn sm" id="openBtn">Sprejemaj stranke</button>
+          <button class="btn sm red" id="closeBtn">Ustavi sprejemanje</button>
+        </div>
+        <label>Ime brivnice</label><input id="setName" type="text">
+        <label>Število brivcev (stolov)</label><input id="setChairs" type="number" min="1" max="10">
+        <label>Storitve (ime, cena €, minute)</label>
+        <div id="svcEdit"></div>
+        <button class="btn sm ghost" id="svcAdd" style="margin-bottom:14px">+ Dodaj storitev</button>
+        <label>Nov PIN (pusti prazno, če ga ne spreminjaš)</label><input id="setPin" type="text" inputmode="numeric">
+        <button class="btn" id="saveBtn">Shrani nastavitve</button>
+        <div style="height:16px"></div>
+        <button class="btn sm ghost" id="resetBtn">Počisti vrsto in začni od 1</button>
+        <p class="muted">Povezave: stranke <code id="lnkC"></code> · TV <code id="lnkT"></code></p>
+      </details>
+    </div>
+  </section>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+let pin = sessionStorageGet('pin');
+let S = null;
+
+function sessionStorageGet(k) { try { return sessionStorage.getItem(k); } catch { return null; } }
+function sessionStorageSet(k, v) { try { sessionStorage.setItem(k, v); } catch {} }
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+async function api(path, body) {
+  const r = await fetch('/api/admin/' + path, {
+    method: 'POST', headers: { 'Content-Type': 'application/json', 'x-pin': pin || '' },
+    body: JSON.stringify(body || {}),
+  });
+  const d = await r.json();
+  if (r.status === 401) { showLogin('Napačen PIN'); throw 0; }
+  $('err').textContent = r.ok ? '' : d.error;
+  if (r.ok) render(d);
+  return d;
+}
+
+function showLogin(msg) {
+  $('login').classList.remove('hidden'); $('app').classList.add('hidden');
+  $('loginErr').textContent = msg || '';
+}
+
+$('loginBtn').onclick = async () => {
+  pin = $('pin').value; sessionStorageSet('pin', pin);
+  try { await api('state'); $('login').classList.add('hidden'); $('app').classList.remove('hidden'); fillSettings(); } catch {}
+};
+$('pin').onkeydown = e => { if (e.key === 'Enter') $('loginBtn').click(); };
+
+function render(s) {
+  S = s;
+  $('shopName').textContent = s.shop.name;
+  $('live').textContent = s.shop.open ? 'Sprejemamo stranke' : 'Zaprto';
+  $('live').classList.toggle('off', !s.shop.open);
+  $('sWaiting').textContent = s.waitingCount;
+  $('sDone').innerHTML = `${s.doneToday}<span style="font-size:18px"> · ${s.avgCut}m</span>`;
+
+  const serving = s.tickets.filter(t => t.status === 'serving');
+  const waiting = s.tickets.filter(t => t.status === 'waiting');
+  let html = '';
+  for (let c = 1; c <= s.shop.chairs; c++) {
+    const t = serving.find(x => x.chair === c);
+    html += `<div class="card chair"><h3>Stol ${c}</h3>` + (t
+      ? `<div class="who">#${t.number} ${esc(t.name)}</div><div class="timer" data-start="${t.startedAt}">${esc(t.serviceName)}</div>
+         <div class="row"><button class="btn sm" onclick="api('next',{chair:${c}})" ${waiting.length ? '' : 'disabled'}>Končano · naslednji</button>
+         <button class="btn sm ghost" onclick="api('done',{id:'${t.id}'})">Končano</button></div>`
+      : `<div class="who" style="color:var(--muted)">Prost</div><div class="timer">&nbsp;</div>
+         <button class="btn sm orange" onclick="api('next',{chair:${c}})" ${waiting.length ? '' : 'disabled'}>Pokliči naslednjega${waiting[0] ? ' · #' + waiting[0].number : ''}</button>`) + `</div>`;
+  }
+  $('chairs').innerHTML = html;
+
+  $('queue').innerHTML = waiting.length ? waiting.map((t, i) => `
+    <div class="q"><div class="no">${t.number}</div>
+      <div class="info"><b>${esc(t.name)}${t.phone ? '' : '<span class="tag">v brivnici</span>'}${t.whatsapp ? '<span class="tag wa">WhatsApp</span>' : ''}</b>
+        <span class="muted">${esc(t.serviceName)} · ~${t.eta} min · v vrsti od ${new Date(t.joinedAt).toLocaleTimeString('sl-SI', { hour: '2-digit', minute: '2-digit' })}</span></div>
+      <div class="acts">
+        <button class="btn sm ghost" onclick="api('start',{id:'${t.id}'})" title="Začni zdaj na prostem stolu">Začni</button>
+        <button class="btn sm ghost" onclick="if(confirm('Preskočim št. ${t.number}, ker ni prišel?'))api('noshow',{id:'${t.id}'})">Ni prišel</button>
+      </div></div>`).join('') : '<p class="muted">Nihče ne čaka.</p>';
+
+  const sel = $('addSvc');
+  sel.innerHTML = s.services.map(x => `<option value="${x.id}">${esc(x.name)}</option>`).join('');
+  tick();
+}
+
+function fillSettings() {
+  const s = S;
+  $('setName').value = s.shop.name;
+  $('setChairs').value = s.shop.chairs;
+  $('svcEdit').innerHTML = s.services.map(svcRow).join('');
+  $('lnkC').textContent = location.origin + '/';
+  $('lnkT').textContent = location.origin + '/tv';
+}
+const svcRow = x => `<div class="svcRow" data-id="${esc(x.id || '')}">
+  <input type="text" value="${esc(x.name || '')}" placeholder="Storitev"><input type="number" value="${x.price ?? ''}" placeholder="€">
+  <input type="number" value="${x.minutes ?? ''}" placeholder="min"><button class="btn sm ghost" onclick="this.parentNode.remove()">✕</button></div>`;
+$('svcAdd').onclick = () => $('svcEdit').insertAdjacentHTML('beforeend', svcRow({}));
+
+$('saveBtn').onclick = async () => {
+  const services = [...document.querySelectorAll('.svcRow')].map((r, i) => {
+    const [n, p, m] = r.querySelectorAll('input');
+    return { id: r.dataset.id || 's' + Date.now() + i, name: n.value, price: p.value, minutes: m.value };
+  }).filter(x => x.name.trim());
+  const body = { name: $('setName').value, chairs: $('setChairs').value, services };
+  if ($('setPin').value) body.pin = $('setPin').value;
+  await api('settings', body);
+  if (body.pin) { pin = body.pin; sessionStorageSet('pin', pin); $('setPin').value = ''; }
+  fillSettings();
+  $('saveBtn').textContent = 'Shranjeno ✓'; setTimeout(() => $('saveBtn').textContent = 'Shrani nastavitve', 1500);
+};
+$('openBtn').onclick = () => api('settings', { open: true });
+$('closeBtn').onclick = () => api('settings', { open: false });
+$('resetBtn').onclick = () => confirm('Odstranim vse iz vrste in začnem znova od št. 1?') && api('reset');
+$('addBtn').onclick = async () => { await api('add', { name: $('addName').value, serviceId: $('addSvc').value }); $('addName').value = ''; };
+
+// running timers on busy chairs
+function tick() {
+  document.querySelectorAll('.timer[data-start]').forEach(el => {
+    const m = Math.floor((Date.now() - +el.dataset.start) / 60000);
+    el.textContent = el.textContent.split(' · ')[0] + ` · ${m} min na stolu`;
+  });
+}
+setInterval(tick, 15000);
+
+new EventSource('/events').onmessage = () => { if (pin && S) api('state').catch(() => {}); };
+if (pin) { $('pin').value = pin; $('loginBtn').click(); }
+</script>
+</body>
+</html>

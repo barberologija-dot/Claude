@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="sl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f4d36">
+<title>Vrsta brez naročila</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><div class="brand" id="shopName">…</div><div class="live" id="live">V živo</div></div>
+
+  <!-- Join -->
+  <section id="join" class="hidden">
+    <div class="grid2">
+      <div class="stat"><div class="lbl">Trenutno čaka</div><div class="big" id="jWaiting">0</div></div>
+      <div class="stat dark"><div class="lbl">Tvoje čakanje</div><div class="big" id="jWait">0<span style="font-size:20px"> min</span></div></div>
+    </div>
+    <div class="card">
+      <label for="name">Tvoje ime</label>
+      <input id="name" type="text" autocomplete="given-name" placeholder="npr. Marko" maxlength="40">
+      <label>Storitev</label>
+      <div class="services" id="services"></div>
+      <button class="btn" id="joinBtn">Vzemi številko</button>
+      <div class="err" id="joinErr"></div>
+      <p class="muted center" style="margin:6px 0 0">Ni ti treba čakati v brivnici. Spremljaj odštevanje v živo in pridi, ko boš na vrsti.</p>
+    </div>
+  </section>
+
+  <!-- Ticket -->
+  <section id="ticket" class="hidden">
+    <div class="sub" id="greet"></div>
+    <div id="banner"></div>
+    <div class="grid2">
+      <div class="stat"><div class="lbl">Tvoja št.</div><div class="big" id="myNo">–</div></div>
+      <div class="stat dark"><div class="lbl">Pred tabo</div><div class="big" id="ahead">–</div></div>
+    </div>
+    <div class="card"><div class="dots" id="dots"></div></div>
+    <div class="card eta" id="etaCard">
+      <svg class="ring" viewBox="0 0 84 84"><circle class="bg" cx="42" cy="42" r="36"/><circle class="fg" id="ringFg" cx="42" cy="42" r="36"/><text x="42" y="42" id="ringTxt">–</text></svg>
+      <div><div class="t1">Na vrsti čez</div><div class="t2" id="etaTxt">–</div><div class="muted" id="svcTxt"></div></div>
+    </div>
+    <div class="pill" id="avg">Povp. striženje ≈ – min</div>
+    <div style="height:14px"></div>
+    <a class="btn wa hidden" id="waBtn" target="_blank" rel="noopener">Obvesti me na WhatsApp</a>
+    <p class="muted center hidden" id="waHint" style="margin:0 0 10px">Odpre se WhatsApp s pripravljenim sporočilom – samo pritisni <b>Pošlji</b>.</p>
+    <div class="banner info hidden" id="waOn">✅ Obvestila na WhatsApp so vklopljena</div>
+    <button class="btn ghost" id="notifyBtn">🔔 Obvesti me v brskalniku</button>
+    <div style="height:8px"></div>
+    <button class="btn ghost" id="leaveBtn">Zapusti vrsto</button>
+  </section>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+let token = null;
+try { token = localStorage.getItem('walkin_token'); } catch {}
+let startEta = null, alertLevel = 0;
+
+async function load() {
+  const r = await fetch('/api/state' + (token ? '?token=' + token : ''));
+  const s = await r.json();
+  render(s);
+}
+
+function render(s) {
+  $('shopName').textContent = s.shop.name;
+  document.title = s.shop.name + ' · Vrsta';
+  $('live').textContent = s.shop.open ? 'V živo' : 'Zaprto';
+  $('live').classList.toggle('off', !s.shop.open);
+  $('avg').textContent = `⏱ Povp. striženje ≈ ${s.avgCut} min`;
+
+  const me = s.me;
+  const active = me && (me.status === 'waiting' || me.status === 'serving');
+  if (!active && me) {
+    // finished / cancelled / no-show: show the outcome once, then forget
+    try { localStorage.removeItem('walkin_token'); } catch {}
+    token = null;
+    if (me.status === 'noshow') alert('Tvoja številka je bila preskočena, ker te ni bilo v brivnici. Lahko vzameš novo številko.');
+  }
+  $('join').classList.toggle('hidden', !!active);
+  $('ticket').classList.toggle('hidden', !active);
+
+  if (!active) {
+    $('jWaiting').textContent = s.waitingCount;
+    $('jWait').innerHTML = `${s.nextWait}<span style="font-size:20px"> min</span>`;
+    const box = $('services');
+    if (!box.dataset.ready) {
+      box.innerHTML = s.services.map((x, i) => `
+        <label class="svc"><input type="radio" name="svc" value="${x.id}" ${i === 0 ? 'checked' : ''}>
+          <span>${esc(x.name)}<small>~${x.minutes} min</small></span><b>${x.price} €</b></label>`).join('');
+      box.dataset.ready = 1;
+    }
+    $('joinBtn').disabled = !s.shop.open;
+    $('joinErr').textContent = s.shop.open ? '' : 'Brivnica trenutno ne sprejema strank brez naročila.';
+    return;
+  }
+
+  $('greet').textContent = `Živjo, ${me.name} · ${me.service}`;
+  $('waBtn').classList.toggle('hidden', !me.waLink);
+  $('waHint').classList.toggle('hidden', !me.waLink);
+  if (me.waLink) $('waBtn').href = me.waLink;
+  $('waOn').classList.toggle('hidden', !me.whatsapp);
+  $('myNo').textContent = me.number;
+  $('ahead').textContent = me.ahead;
+
+  // queue dots: people ahead (grey), you (orange), then the chair
+  const n = Math.min(me.ahead, 12);
+  $('dots').innerHTML = (me.ahead > 12 ? `<span class="muted">+${me.ahead - 12}</span>` : '') +
+    '<span class="person"></span>'.repeat(n) + '<span class="person me" title="Ti"></span>' +
+    '<span class="chairIcon" title="Brivski stol">✂</span>';
+
+  const b = $('banner');
+  if (me.status === 'serving') {
+    b.innerHTML = `<div class="banner go">Na vrsti si! Stol ${me.chair} ✂️</div>`;
+    $('etaCard').classList.add('hidden');
+    $('ahead').textContent = 0;
+    ping(2);
+  } else {
+    $('etaCard').classList.remove('hidden');
+    if (me.ahead === 0) { b.innerHTML = `<div class="banner go">Pred tabo ni nikogar več – pridi zdaj v brivnico</div>`; ping(1); }
+    else if (me.eta <= 10) { b.innerHTML = `<div class="banner info">Kmalu boš na vrsti – odpravi se proti brivnici</div>`; ping(1); }
+    else b.innerHTML = '';
+    if (startEta === null || me.eta > startEta) startEta = Math.max(me.eta, 1);
+    const C = 2 * Math.PI * 36, fg = $('ringFg');
+    fg.style.strokeDasharray = C;
+    fg.style.strokeDashoffset = C * (1 - me.eta / startEta); // full ring shrinks as your turn nears
+    $('ringTxt').textContent = me.eta;
+    $('etaTxt').textContent = me.eta <= 1 ? 'vsak hip' : `${me.eta} min`;
+    $('svcTxt').textContent = `Okoli ${new Date(Date.now() + me.eta * 60000).toLocaleTimeString('sl-SI', { hour: '2-digit', minute: '2-digit' })}`;
+  }
+}
+
+// Sound + vibration + notification, once per level
+// level 1 = almost your turn, level 2 = in the chair now
+function ping(level) {
+  if (alertLevel >= level) return;
+  alertLevel = level;
+  try { navigator.vibrate && navigator.vibrate([300, 150, 300]); } catch {}
+  try {
+    const a = new AudioContext(), o = a.createOscillator(), g = a.createGain();
+    o.connect(g); g.connect(a.destination); o.frequency.value = 880; g.gain.value = .15;
+    o.start(); o.stop(a.currentTime + .4);
+  } catch {}
+  try {
+    if (window.Notification && Notification.permission === 'granted')
+      new Notification(level === 2 ? 'Na vrsti si!' : 'Kmalu boš na vrsti', { body: 'Odpravi se v brivnico.' });
+  } catch {}
+}
+
+$('joinBtn').onclick = async () => {
+  const name = $('name').value.trim();
+  if (!name) { $('joinErr').textContent = 'Prosim, vpiši svoje ime.'; return; }
+  const serviceId = (document.querySelector('input[name=svc]:checked') || {}).value;
+  $('joinBtn').disabled = true;
+  const r = await fetch('/api/join', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, serviceId }) });
+  const d = await r.json();
+  $('joinBtn').disabled = false;
+  if (!r.ok) { $('joinErr').textContent = d.error; return; }
+  token = d.token; alertLevel = 0; startEta = null;
+  try { localStorage.setItem('walkin_token', token); } catch {}
+  load();
+};
+
+$('leaveBtn').onclick = async () => {
+  if (!confirm('Res želiš zapustiti vrsto?')) return;
+  await fetch('/api/cancel', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token }) });
+  try { localStorage.removeItem('walkin_token'); } catch {}
+  token = null; load();
+};
+
+$('notifyBtn').onclick = async () => {
+  if (!window.Notification) { $('notifyBtn').textContent = 'Pusti stran odprto – zapiskala bo'; return; }
+  const p = await Notification.requestPermission();
+  $('notifyBtn').textContent = p === 'granted' ? '🔔 Obvestila vklopljena – pusti stran odprto' : 'Obvestila blokirana – pusti stran odprto';
+};
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+load();
+new EventSource('/events').onmessage = load;
+setInterval(load, 30000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) load(); });
+</script>
+</body>
+</html>
